@@ -1,0 +1,63 @@
+version: "3.8"
+services:
+  dockge:
+    image: louislam/dockge:1
+    container_name: dockge
+    restart: unless-stopped
+    network_mode: service:tailscale
+    mem_limit: 256m
+    memswap_limit: 256m
+    mem_reservation: 128m
+    cpus: 1
+    environment:
+      - TZ=Europe/Budapest
+      - DOCKGE_STACKS_DIR=/opt/docker/stacks
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /opt/docker/volumes/dockge/appdata:/app/data
+      - /opt/docker/stacks:/opt/docker/stacks
+    cap_drop:
+      - all
+    cap_add:
+      - chown
+      - setuid
+      - setgid
+      - net_bind_service
+    security_opt:
+      - no-new-privileges
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://127.0.0.1:5001"]
+      interval: 1s
+      timeout: 5s
+      retries: 60
+    depends_on:
+      tailscale:
+        condition: service_healthy
+  tailscale:
+    image: tailscale/tailscale:latest
+    hostname: ${CT_HOSTNAME}
+    restart: unless-stopped
+    mem_limit: 64m
+    memswap_limit: 64m
+    mem_reservation: 32m
+    cpus: 1
+    environment:
+      - TS_AUTHKEY=${TS_AUTHKEY}
+      - TS_EXTRA_ARGS=--advertise-tags=tag:container
+      - TS_SERVE_CONFIG=/config/tailscale.json
+      - TS_STATE_DIR=/var/lib/tailscale
+    volumes:
+      - "/opt/docker/volumes/dockge/tailscale/state:/var/lib/tailscale"
+      - "/opt/docker/stacks/dockge/tailscale.json:/config/tailscale.json:ro"
+      - "/dev/net/tun:/dev/net/tun"
+    cap_add:
+      - net_admin
+      - sys_module
+      - net_raw    
+    security_opt:
+      - no-new-privileges
+    healthcheck:
+      test: ["CMD-SHELL", "tailscale status"]
+      interval: 1s
+      timeout: 5s
+      retries: 60
