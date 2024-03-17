@@ -1,0 +1,33 @@
+version: '3.8'
+services:
+  netbootxyz:
+    image: linuxserver/netbootxyz:latest
+    container_name: netbootxyz
+    restart: unless-stopped
+    mem_limit: 1024m
+    memswap_limit: 1024m
+    mem_reservation: 512M
+    cpus: 1
+    dns:
+      - 100.100.100.100
+      - 1.1.1.1
+    environment:
+      - PUID=4000
+      - GUID=4000
+      - TZ=Europe/Budapest
+      - PORT_RANGE=30000:30010 #optional
+      - SUBFOLDER=/ #optional
+      - TAILSCALE_AUTHKEY=${TS_AUTHKEY}
+      - TAILSCALE_USE_SSH=0
+      - TAILSCALE_STATE_DIR=/var/lib/tailscale
+      - TAILSCALE_SERVE_PORT=3000
+      - TAILSCALE_SERVE_MODE=https
+      - TAILSCALE_HOSTNAME=${CT_HOSTNAME}
+      - DOCKER_MODS=ghcr.io/tailscale-dev/docker-mod:main
+    volumes:
+      - /opt/docker/volumes/netbootxyz/config:/config
+      - /opt/docker/volumes/netbootxyz/assets:/assets #optional
+      - /opt/docker/volumes/netbootxyz/state:/var/lib/tailscale
+    ports:
+      - 69:69/udp
+      - 8080:80 #optional

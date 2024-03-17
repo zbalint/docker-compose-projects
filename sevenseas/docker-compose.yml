@@ -1,0 +1,135 @@
+version: '3.8'
+services:
+  transmission:
+    image: linuxserver/transmission:latest
+    container_name: transmission
+    restart: unless-stopped
+    mem_limit: 512m
+    memswap_limit: 512m
+    mem_reservation: 256m
+    cpus: 1
+    dns:
+      - 100.100.100.100
+      - 1.1.1.1
+    environment:
+      - PUID=4000
+      - GUID=4000
+      - TZ=Europe/Budapest
+      - TAILSCALE_AUTHKEY=${TS_AUTHKEY}
+      - TAILSCALE_USE_SSH=0
+      - TAILSCALE_STATE_DIR=/var/lib/tailscale
+      - TAILSCALE_SERVE_PORT=9091
+      - TAILSCALE_SERVE_MODE=https
+      - TAILSCALE_HOSTNAME=vm-transmission
+      - DOCKER_MODS=ghcr.io/tailscale-dev/docker-mod:main
+    volumes:
+      - /opt/docker/volumes/sevenseas/transmission/conf:/config
+      - /opt/docker/volumes/sevenseas/transmission/state:/var/lib/tailscale
+      - /mnt/hdd/media/torrent/complete:/downloads/complete
+      - /mnt/hdd/media/torrent/inprogress:/downloads/incomplete
+    cap_add:
+      - net_admin
+      - sys_module
+      - net_raw
+    security_opt:
+      - no-new-privileges
+
+  prowlarr:
+    image: linuxserver/prowlarr:latest
+    container_name: prowlarr
+    restart: unless-stopped
+    mem_limit: 256m
+    memswap_limit: 256m
+    mem_reservation: 128m
+    cpus: 1
+    dns:
+      - 100.100.100.100
+      - 1.1.1.1
+    environment:
+      - PUID=4000
+      - GUID=4000
+      - TZ=Europe/Budapest
+      - TAILSCALE_AUTHKEY=${TS_AUTHKEY}
+      - TAILSCALE_USE_SSH=0
+      - TAILSCALE_STATE_DIR=/var/lib/tailscale
+      - TAILSCALE_SERVE_PORT=9696
+      - TAILSCALE_SERVE_MODE=https
+      - TAILSCALE_HOSTNAME=vm-prowlarr
+      - DOCKER_MODS=ghcr.io/tailscale-dev/docker-mod:main
+    volumes:
+      - /opt/docker/volumes/sevenseas/prowlarr/conf:/config
+      - /opt/docker/volumes/sevenseas/prowlarr/state:/var/lib/tailscale
+    cap_add:
+      - net_admin
+      - sys_module
+      - net_raw
+    security_opt:
+      - no-new-privileges
+
+  radarr:
+    image: linuxserver/radarr:latest
+    container_name: radarr
+    restart: unless-stopped
+    mem_limit: 512m
+    memswap_limit: 512m
+    mem_reservation: 256m
+    cpus: 1
+    dns:
+      - 100.100.100.100
+      - 1.1.1.1
+    environment:
+      - PUID=4000
+      - GUID=4000
+      - TZ=Europe/Budapest
+      - TAILSCALE_AUTHKEY=${TS_AUTHKEY}
+      - TAILSCALE_USE_SSH=0
+      - TAILSCALE_STATE_DIR=/var/lib/tailscale
+      - TAILSCALE_SERVE_PORT=7878
+      - TAILSCALE_SERVE_MODE=https
+      - TAILSCALE_HOSTNAME=vm-radarr
+      - DOCKER_MODS=ghcr.io/tailscale-dev/docker-mod:main
+    volumes:
+      - /opt/docker/volumes/sevenseas/radarr/conf:/config
+      - /opt/docker/volumes/sevenseas/radarr/state:/var/lib/tailscale
+      - /mnt/hdd/media/library/films:/movies
+      - /mnt/hdd/media/torrent/complete/:/downloads/complete
+    cap_add:
+      - net_admin
+      - sys_module
+      - net_raw
+    security_opt:
+      - no-new-privileges
+
+  sonarr:
+    image: linuxserver/sonarr:latest
+    container_name: sonarr
+    restart: unless-stopped
+    mem_limit: 512m
+    memswap_limit: 512m
+    mem_reservation: 256m
+    cpus: 1
+    dns:
+      - 100.100.100.100
+      - 1.1.1.1
+    environment:
+      - PUID=4000
+      - GUID=4000
+      - TZ=Europe/Budapest
+      - TAILSCALE_AUTHKEY=${TS_AUTHKEY}
+      - TAILSCALE_USE_SSH=0
+      - TAILSCALE_STATE_DIR=/var/lib/tailscale
+      - TAILSCALE_SERVE_PORT=8989
+      - TAILSCALE_SERVE_MODE=https
+      - TAILSCALE_HOSTNAME=vm-sonarr
+      - DOCKER_MODS=ghcr.io/tailscale-dev/docker-mod:main
+    volumes:
+      - /opt/docker/volumes/sevenseas/sonarr/conf:/config
+      - /opt/docker/volumes/sevenseas/sonarr/state:/var/lib/tailscale
+      - /mnt/hdd/media/library/shows:/data
+      - /mnt/hdd/media/torrent/complete/:/downloads/complete
+    cap_add:
+      - net_admin
+      - sys_module
+      - net_raw
+    security_opt:
+      - no-new-privileges
