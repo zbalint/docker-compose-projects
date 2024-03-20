@@ -18,6 +18,7 @@ services:
       - PORT_RANGE=30000:30010 #optional
       - SUBFOLDER=/ #optional
       - TAILSCALE_AUTHKEY=${TS_AUTHKEY}
+      - TAILSCALE_EXTRA_ARGS=--advertise-tags=tag:container
       - TAILSCALE_USE_SSH=0
       - TAILSCALE_STATE_DIR=/var/lib/tailscale
       - TAILSCALE_SERVE_PORT=3000

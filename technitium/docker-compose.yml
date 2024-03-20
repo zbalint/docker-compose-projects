@@ -3,7 +3,7 @@ services:
   dns-server:
     image: technitium/dns-server:latest
     container_name: technitium
-    hostname: technitium
+    hostname: ${CT_HOSTNAME}
     restart: unless-stopped
     # For DHCP deployments, use "host" network mode and remove all the port mappings, including the ports array by commenting them
     # network_mode: "host"
@@ -39,7 +39,7 @@ services:
       # - DNS_SERVER_FORWARDER_PROTOCOL=Tcp #Forwarder protocol options: Udp, Tcp, Tls, Https, HttpsJson.
       # - DNS_SERVER_LOG_USING_LOCAL_TIME=true #Enable this option to use local time instead of UTC for logging.
     volumes:
-      - ./appdata:/etc/dns
-      - ./secret:/opt/cert
+      - /opt/docker/volumes/technitium/appdata:/etc/dns
+      - /opt/docker/volumes/technitium/secret:/opt/cert
     sysctls:
       - net.ipv4.ip_local_port_range=1024 65000
