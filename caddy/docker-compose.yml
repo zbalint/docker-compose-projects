@@ -1,0 +1,23 @@
+version: "3.8"
+services:
+  caddy:
+    image: caddy:2
+    container_name: caddy
+    restart: unless-stopped
+    mem_limit: 512m
+    memswap_limit: 512m
+    mem_reservation: 128m
+    cpus: 1
+    cap_add:
+      - net_admin
+    security_opt:
+      - no-new-privileges
+    ports:
+      - "${LISTEN_ADDRESS}:80:80"
+      - "${LISTEN_ADDRESS}:443:443"
+      - "${LISTEN_ADDRESS}:443:443/udp"
+    volumes:
+      - /opt/docker/stacks/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - /opt/docker/volumes/caddy/site:/srv
+      - /opt/docker/volumes/caddy/data:/data
+      - /opt/docker/volumes/caddy/config:/config

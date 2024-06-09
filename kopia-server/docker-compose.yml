@@ -1,0 +1,71 @@
+services:
+  kopia:
+    image: kopia/kopia:latest
+    container_name: kopia
+    user: "0:0"
+    restart: "unless-stopped"
+    network_mode: service:tailscale
+    privileged: true
+    cap_add:
+      - SYS_ADMIN
+    security_opt:
+      - apparmor:unconfined
+    devices:
+      - /dev/fuse:/dev/fuse:rwm
+    command:
+      - server
+      - start
+      - --insecure
+      - --disable-csrf-token-checks
+      - --tls-generate-cert
+      - --tls-cert-file=/dev/shm/my.cert
+      - --tls-key-file=/dev/shm/my.key
+      - --address=0.0.0.0:51515
+      - --server-username=${KOPIA_SERVER_USERNAME}
+      - --server-password=${KOPIA_SERVER_PASSWORD}
+    volumes:
+      - /mnt/kopia:/tmp:shared
+      - /opt/docker/volumes/kopia/config:/app/config
+      - /opt/docker/volumes/kopia/cache:/app/cache
+      - /opt/docker/volumes/kopia/logs:/app/logs
+      - /opt/docker/volumes/kopia/repository:/app/repository
+    environment:
+      - KOPIA_PASSWORD=${KOPIA_REPOSITORY_PASSWORD}
+      - TZ=Europe/Budapest
+    healthcheck:
+      test: ["CMD-SHELL", "ss -nputwl | grep LISTEN | grep 51515"]
+      interval: 1s
+      timeout: 5s
+      retries: 60
+    depends_on:
+      tailscale:
+        condition: service_healthy
+  tailscale:
+    image: tailscale/tailscale:latest
+    hostname: ${CT_HOSTNAME}
+    restart: unless-stopped
+    mem_limit: 128m
+    memswap_limit: 128m
+    mem_reservation: 64m
+    cpus: 2
+    environment:
+      - TS_AUTHKEY=${TS_AUTHKEY}
+      - TS_EXTRA_ARGS=--advertise-tags=tag:container
+      - TS_SERVE_CONFIG=/config/tailscale.json
+      - TS_STATE_DIR=/var/lib/tailscale
+    volumes:
+      - "/opt/docker/volumes/kopia/tailscale/state:/var/lib/tailscale"
+      - "/opt/docker/stacks/kopia/tailscale.json:/config/tailscale.json:ro"
+      - "/dev/net/tun:/dev/net/tun"
+    cap_add:
+      - net_admin
+      - sys_module
+      - net_raw    
+    security_opt:
+      - no-new-privileges
+    healthcheck:
+      test: ["CMD-SHELL", "tailscale status"]
+      interval: 1s
+      timeout: 5s
+      retries: 60
+    

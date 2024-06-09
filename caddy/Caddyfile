@@ -1,0 +1,15 @@
+(cloudflare) {
+    tls {
+        dns cloudflare mclM0XgPKKJ3on1yUppEo-rJSITSlrsTu2vbjnhC
+    }
+}
+
+searxng.lab.escapethelan.com {
+    reverse_proxy 100.64.10.95:443
+    import cloudflare
+}
+
+search.lab.escapethelan.com {
+    reverse_proxy vm-searxng.tail0e99d.ts.net:443
+    import cloudflare
+}

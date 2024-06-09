@@ -4,14 +4,15 @@ services:
     image: searxng/searxng:latest
     container_name: searxng
     restart: unless-stopped
-    network_mode: service:tailscale
-    mem_limit: 1024m
-    memswap_limit: 1024m
+    mem_limit: 384m
+    memswap_limit: 384m
     mem_reservation: 128m
     cpus: 2
+    ports:
+      - 80:8080
     environment:
       - TZ=Europe/Budapest
-      - BASE_URL=https://${CT_HOSTNAME}.tail0e99d.ts.net
+      - BASE_URL=https://${DOMAIN}
       - INSTANCE_NAME=${CT_HOSTNAME}
     volumes:
       - /opt/docker/volumes/searxng/appdata:/etc/searxng
@@ -19,37 +20,6 @@ services:
       - no-new-privileges
     healthcheck:
       test: ["CMD-SHELL", "wget --spider 127.0.0.1:8080"]
-      interval: 1s
-      timeout: 5s
-      retries: 60
-    depends_on:
-      tailscale:
-        condition: service_healthy
-  tailscale:
-    image: tailscale/tailscale:latest
-    hostname: ${CT_HOSTNAME}
-    restart: unless-stopped
-    mem_limit: 64m
-    memswap_limit: 64m
-    mem_reservation: 32m
-    cpus: 1
-    environment:
-      - TS_AUTHKEY=${TS_AUTHKEY}
-      - TS_EXTRA_ARGS=--advertise-tags=tag:container
-      - TS_SERVE_CONFIG=/config/tailscale.json
-      - TS_STATE_DIR=/var/lib/tailscale
-    volumes:
-      - "/opt/docker/volumes/searxng/tailscale/state:/var/lib/tailscale"
-      - "/opt/docker/stacks/searxng/tailscale.json:/config/tailscale.json:ro"
-      - "/dev/net/tun:/dev/net/tun"
-    cap_add:
-      - net_admin
-      - sys_module
-      - net_raw    
-    security_opt:
-      - no-new-privileges
-    healthcheck:
-      test: ["CMD-SHELL", "tailscale status"]
       interval: 1s
       timeout: 5s
       retries: 60
