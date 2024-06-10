@@ -1,7 +1,7 @@
 http:
  #region routers 
   routers:
-    vm-searxng:
+    lxc-searxng:
       entryPoints:
         - "https"
       rule: "Host(`searxng.lab.escapethelan.com`)"
@@ -9,7 +9,7 @@ http:
         - default-headers
         - https-redirectscheme
       tls: {}
-      service: vm-searxng
+      service: lxc-searxng
     netbootxyz:
       entryPoints:
         - "https"
@@ -19,20 +19,38 @@ http:
         - https-redirectscheme
       tls: {}
       service: netbootxyz
+    lxc-technitium-01:
+      entryPoints:
+        - "https"
+      rule: "Host(`tcdns01.lab.escapethelan.com`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: lxc-technitium-01
+    lxc-technitium-02:
+      entryPoints:
+        - "https"
+      rule: "Host(`tcdns02.lab.escapethelan.com`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: lxc-technitium-02
 
 #endregion
 #region services
   services:
-    vm-searxng:
+    lxc-searxng:
       weighted:
         healthCheck: {}
         services:
-        - name: vm-searxng-01
+        - name: lxc-searxng-01
           weight: 1
-        - name: vm-searxng-02
+        - name: lxc-searxng-02
           weight: 2
 
-    vm-searxng-01:
+    lxc-searxng-01:
       loadBalancer:
         healthCheck:
           path: /stats
@@ -41,7 +59,7 @@ http:
         servers:
         - url: "http://100.64.10.1"
 
-    vm-searxng-02:
+    lxc-searxng-02:
       loadBalancer:
         healthCheck:
           path: /stats
@@ -53,8 +71,21 @@ http:
     netbootxyz:
       loadBalancer:
         servers:
-          - url: "https://100.64.10.177:443"
+          - url: "http://100.64.1.13:3000"
         passHostHeader: true
+    
+    lxc-technitium-01:
+      loadBalancer:
+        servers:
+          - url: "http://100.64.100.101:5380"
+        passHostHeader: true
+    
+    lxc-technitium-02:
+      loadBalancer:
+        servers:
+          - url: "http://100.64.100.102:5380"
+        passHostHeader: true
+    
 
 
 #endregion

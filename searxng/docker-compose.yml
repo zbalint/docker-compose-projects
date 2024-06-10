@@ -1,4 +1,3 @@
-version: "3.8"
 services:
   searxng:
     image: searxng/searxng:latest
@@ -13,7 +12,7 @@ services:
     environment:
       - TZ=Europe/Budapest
       - BASE_URL=https://${DOMAIN}
-      - INSTANCE_NAME=${CT_HOSTNAME}
+      - INSTANCE_NAME=${INSTANCE_NAME}
     volumes:
       - /opt/docker/volumes/searxng/appdata:/etc/searxng
     security_opt:
