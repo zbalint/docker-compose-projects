@@ -1,0 +1,23 @@
+services:
+  adguardhome-sync:
+    image: ghcr.io/bakito/adguardhome-sync
+    container_name: adguardhome-sync
+    restart: unless-stopped
+    command: run --config /config/adguardhome-sync.yaml
+    volumes:
+      - /opt/docker/volumes/adguardhome-sync/config/adguardhome-sync.yaml:/config/adguardhome-sync.yaml
+    mem_limit: 384m
+    memswap_limit: 384m
+    mem_reservation: 256m
+    cpus: 1
+    environment:
+      PUID: 4000
+      GUID: 4000
+      TZ: Europe/Budapest
+    security_opt:
+      - no-new-privileges
+    healthcheck:
+      test: ["CMD-SHELL", "ss -nputwl | grep LISTEN | grep 8080"]
+      interval: 1s
+      timeout: 5s
+      retries: 60

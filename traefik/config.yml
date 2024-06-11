@@ -19,6 +19,25 @@ http:
         - https-redirectscheme
       tls: {}
       service: netbootxyz
+    paperlessngx:
+      entryPoints:
+        - "https"
+      rule: "Host(`paperless.lab.escapethelan.com`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: paperlessngx
+    linkwarden:
+      entryPoints:
+        - "https"
+      rule: "Host(`linkwarden.lab.escapethelan.com`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: linkwarden
+    
     lxc-technitium-01:
       entryPoints:
         - "https"
@@ -37,6 +56,25 @@ http:
         - https-redirectscheme
       tls: {}
       service: lxc-technitium-02
+    adguardhome-01:
+      entryPoints:
+        - "https"
+      rule: "Host(`aghdns01.lab.escapethelan.com`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: adguardhome-01
+    adguardhome-02:
+      entryPoints:
+        - "https"
+      rule: "Host(`aghdns02.lab.escapethelan.com`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: adguardhome-02
+
 
 #endregion
 #region services
@@ -73,6 +111,18 @@ http:
         servers:
           - url: "http://100.64.1.13:3000"
         passHostHeader: true
+
+    paperlessngx:
+      loadBalancer:
+        servers:
+          - url: "http://100.64.10.3:8000"
+        passHostHeader: true
+
+    linkwarden:
+      loadBalancer:
+        servers:
+          - url: "http://100.64.10.4:3000"
+        passHostHeader: true
     
     lxc-technitium-01:
       loadBalancer:
@@ -85,8 +135,18 @@ http:
         servers:
           - url: "http://100.64.100.102:5380"
         passHostHeader: true
-    
 
+    adguardhome-01:
+      loadBalancer:
+        servers:
+          - url: "http://100.64.100.201"
+        passHostHeader: true
+    
+    adguardhome-02:
+      loadBalancer:
+        servers:
+          - url: "http://100.64.100.202"
+        passHostHeader: true
 
 #endregion
   middlewares:
