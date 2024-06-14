@@ -1,0 +1,45 @@
+---
+services:
+  bookstack:
+    image: lscr.io/linuxserver/bookstack
+    container_name: bookstack
+    restart: unless-stopped
+    mem_limit: 512m
+    memswap_limit: 512m
+    mem_reservation: 256m
+    cpus: 2
+    environment:
+      - PUID=4000
+      - PGID=4000
+      - TZ=Europe/Budapest
+      - APP_URL=https://bookstack.lab.escapethelan.com
+      - DB_HOST=bookstack_db
+      - DB_PORT=3306
+      - DB_USER=bookstack
+      - DB_PASS=${DATABASE_PASSWORD}
+      - DB_DATABASE=bookstackapp
+    volumes:
+      - /opt/docker/volumes/bookstack/config:/config
+    ports:
+      - 80:80
+    depends_on:
+      - bookstack_db
+
+  bookstack_db:
+    image: lscr.io/linuxserver/mariadb
+    container_name: bookstack_db
+    restart: unless-stopped
+    mem_limit: 512m
+    memswap_limit: 512m
+    mem_reservation: 256m
+    cpus: 2
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - MYSQL_ROOT_PASSWORD=${DATABASE_ROOT_PASSWORD}
+      - MYSQL_DATABASE=bookstackapp
+      - MYSQL_USER=bookstack
+      - MYSQL_PASSWORD=${DATABASE_PASSWORD}
+    volumes:
+      - /opt/docker/volumes/bookstack/mariadb:/config

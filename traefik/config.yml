@@ -37,7 +37,24 @@ http:
         - https-redirectscheme
       tls: {}
       service: linkwarden
-    
+    lxc-bookstack:
+      entryPoints:
+        - "https"
+      rule: "Host(`bookstack.lab.escapethelan.com`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: lxc-bookstack
+    lxc-it-tools:
+      entryPoints:
+        - "https"
+      rule: "Host(`ittools.lab.escapethelan.com`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: lxc-it-tools
     lxc-technitium-01:
       entryPoints:
         - "https"
@@ -122,6 +139,18 @@ http:
       loadBalancer:
         servers:
           - url: "http://100.64.10.4:3000"
+        passHostHeader: true
+
+    lxc-bookstack:
+      loadBalancer:
+        servers:
+          - url: "http://100.64.10.5"
+        passHostHeader: true
+
+    lxc-it-tools:
+      loadBalancer:
+        servers:
+          - url: "http://100.64.10.6"
         passHostHeader: true
     
     lxc-technitium-01:
