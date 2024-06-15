@@ -91,6 +91,16 @@ http:
         - https-redirectscheme
       tls: {}
       service: adguardhome-02
+    adguardhome-03:
+      entryPoints:
+        - "https"
+      rule: "Host(`aghdns03.lab.escapethelan.com`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: adguardhome-03
+      
 
 
 #endregion
@@ -175,6 +185,12 @@ http:
       loadBalancer:
         servers:
           - url: "http://100.64.100.202"
+        passHostHeader: true
+    
+    adguardhome-03:
+      loadBalancer:
+        servers:
+          - url: "http://100.64.100.203"
         passHostHeader: true
 
 #endregion

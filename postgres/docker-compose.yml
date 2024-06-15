@@ -1,0 +1,27 @@
+services:
+  postgres:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=${DATABASE_NAME}
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+    volumes:
+      - /opt/docker/volumes/postgres/pg_data:/var/lib/postgresql/data
+
+  patroni:
+    image: bcgovdevopsps/patroni-postgres:latest
+    environment:
+      - PATRONI_NAME=${NODE_NAME} # Change this to node2 on the second machine
+      - PATRONI_SCOPE=pg_cluster
+      - PATRONI_RESTAPI_LISTEN=0.0.0.0:8008
+      - PATRONI_RESTAPI_CONNECT_ADDRESS=${NODE_IP_ADDRESS}:8008
+      - PATRONI_ETCD_HOSTS=${ETCD_NODE_01_IP_ADDRESS}:2379,${ETCD_NODE_02_IP_ADDRESS}:2379
+      - PATRONI_POSTGRESQL_CONNECT_ADDRESS=${NODE_IP_ADDRESS}:5432
+      - PATRONI_POSTGRESQL_DATA_DIR=/var/lib/postgresql/data
+      - PATRONI_POSTGRESQL_BIN_DIR=/usr/lib/postgresql/13/bin
+      - PATRONI_SUPERUSER_USERNAME=${PATRONI_USERNAME}
+      - PATRONI_SUPERUSER_PASSWORD=${PATRONI_PASSWORD}
+    volumes:
+      - /opt/docker/volumes/postgres/pg_data:/var/lib/postgresql/data
+    depends_on:
+      - postgres
