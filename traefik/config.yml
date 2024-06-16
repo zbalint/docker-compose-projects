@@ -10,6 +10,15 @@ http:
         - https-redirectscheme
       tls: {}
       service: lxc-searxng
+    lxc-gotify:
+      entryPoints:
+        - "https"
+      rule: "Host(`gotify.lab.escapethelan.com`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: lxc-gotify
     netbootxyz:
       entryPoints:
         - "https"
@@ -73,6 +82,15 @@ http:
         - https-redirectscheme
       tls: {}
       service: lxc-technitium-02
+    lxc-technitium-03:
+      entryPoints:
+        - "https"
+      rule: "Host(`tcdns03.lab.escapethelan.com`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: lxc-technitium-03
     adguardhome-01:
       entryPoints:
         - "https"
@@ -114,6 +132,8 @@ http:
           weight: 1
         - name: lxc-searxng-02
           weight: 2
+        - name: lxc-searxng-03
+          weight: 3
 
     lxc-searxng-01:
       loadBalancer:
@@ -133,6 +153,21 @@ http:
         servers:
         - url: "http://100.64.10.2"
 
+    lxc-searxng-03:
+      loadBalancer:
+        healthCheck:
+          path: /stats
+          interval: 10s
+          timeout: 3s
+        servers:
+        - url: "http://100.64.10.3"
+
+    lxc-gotify:
+      loadBalancer:
+        servers:
+          - url: "http://100.64.10.100"
+        passHostHeader: true
+
     netbootxyz:
       loadBalancer:
         servers:
@@ -142,7 +177,7 @@ http:
     paperlessngx:
       loadBalancer:
         servers:
-          - url: "http://100.64.10.3:8000"
+          - url: "http://100.64.10.7:8000"
         passHostHeader: true
 
     linkwarden:
@@ -173,6 +208,12 @@ http:
       loadBalancer:
         servers:
           - url: "http://100.64.100.102:5380"
+        passHostHeader: true
+    
+    lxc-technitium-03:
+      loadBalancer:
+        servers:
+          - url: "http://100.64.100.103:5380"
         passHostHeader: true
 
     adguardhome-01:
