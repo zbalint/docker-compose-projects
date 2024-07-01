@@ -1,0 +1,28 @@
+services:
+    speedtest-tracker:
+        image: 'lscr.io/linuxserver/speedtest-tracker:latest'
+        container_name: speedtest-tracker
+        restart: unless-stopped
+        mem_limit: 512m
+        memswap_limit: 512m
+        mem_reservation: 256m
+        cpus: 2
+        ports:
+            - 80:80
+        environment:
+            - PUID=4000
+            - PGID=4000
+            - APP_KEY=${APP_KEY}
+            - SPEEDTEST_SCHEDULE=0 * * * *
+            - DB_CONNECTION=sqlite
+            - TZ=Europe/Budapest
+            - DISPLAY_TIMEZONE=Europe/Budapest
+            - APP_TIMEZONE=Europe/Budapest
+        volumes:
+            - /opt/docker/volumes/speedtest/config:/config
+            - /opt/docker/volumes/speedtest/appdata/web:/etc/ssl/web
+        healthcheck:
+            test: ["CMD-SHELL", "curl -f http://127.0.0.1:80"]
+            interval: 1s
+            timeout: 5s
+            retries: 60
