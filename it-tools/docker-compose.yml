@@ -7,6 +7,6 @@ services:
     mem_limit: 512m
     memswap_limit: 512m
     mem_reservation: 256m
-    cpus: 1
+    cpus: 2
     ports:
       - 80:80/tcp

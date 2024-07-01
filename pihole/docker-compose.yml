@@ -1,30 +1,26 @@
+# More info at https://github.com/pi-hole/docker-pi-hole/ and https://docs.pi-hole.net/
 services:
-  adguardhome:
-    image: adguard/adguardhome
-    container_name: adguardhome
+  pihole:
+    image: pihole/pihole:latest
+    container_name: pihole
     restart: unless-stopped
     network_mode: service:tailscale
-    # user: 4000:4000
     mem_limit: 512m
     memswap_limit: 512m
     mem_reservation: 384m
-    cpus: 1
+    # For DHCP it is recommended to remove these ports and instead add: network_mode: "host"
     environment:
-      PUID: 4000
-      GUID: 4000
-      TZ: Europe/Budapest
+      TZ: 'Europe/Budapest'
+      WEBPASSWORD: '${WEB_PASSWORD}'
+    # Volumes store your data between container upgrades
     volumes:
-      - /opt/docker/volumes/adguardhome/conf:/opt/adguardhome/conf
-      - /opt/docker/volumes/adguardhome/work:/opt/adguardhome/work
-      - /opt/docker/volumes/adguardhome/tailscale/state/certs:/opt/adguardhome/cert
-    cap_drop:
-      - all
-    cap_add:
-      - net_bind_service
+      - '/opt/docker/volumes/pihole/etc-pihole:/etc/pihole'
+      - '/opt/docker/volumes/pihole/etc-dnsmasq.d:/etc/dnsmasq.d'
+    #   https://github.com/pi-hole/docker-pi-hole#note-on-capabilities
     security_opt:
       - no-new-privileges
     healthcheck:
-      test: ["CMD-SHELL", "ss -nputwl | grep LISTEN | grep 3000"]
+      test: ["CMD-SHELL", "ss -nputwl | grep LISTEN | grep 80"]
       interval: 1s
       timeout: 5s
       retries: 60
@@ -43,17 +39,14 @@ services:
        - 53/tcp
        - 53/udp
        - 80/tcp
-       - 443/tcp
-       - 784/udp
-       - 853/tcp
     environment:
       - TS_AUTHKEY=${TS_AUTHKEY}
       - TS_EXTRA_ARGS=--advertise-tags=tag:container --accept-dns=false --stateful-filtering=false
-      # - TS_SERVE_CONFIG=/config/tailscale.json
+      - TS_SERVE_CONFIG=/config/tailscale.json
       - TS_STATE_DIR=/var/lib/tailscale
     volumes:
-      - "/opt/docker/volumes/adguardhome/tailscale/state:/var/lib/tailscale"
-      - "/opt/docker/stacks/adguardhome/tailscale.json:/config/tailscale.json:ro"
+      - "/opt/docker/volumes/pihole/tailscale/state:/var/lib/tailscale"
+      - "/opt/docker/stacks/pihole/tailscale.json:/config/tailscale.json:ro"
       - "/dev/net/tun:/dev/net/tun"
     cap_add:
       - net_admin

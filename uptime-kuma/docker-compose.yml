@@ -1,0 +1,22 @@
+services:
+  uptime-kuma:
+    image: louislam/uptime-kuma:1
+    container_name: uptime-kuma
+    restart: unless-stopped
+    mem_limit: 512m
+    memswap_limit: 512m
+    mem_reservation: 256m
+    cpus: 2
+    ports:
+      - 80:3001
+    environment:
+      TZ: Europe/Budapest
+    volumes:
+      - /opt/docker/volumes/uptime-kuma/appdata/data:/app/data
+    security_opt:
+      - no-new-privileges
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://127.0.0.1:3001"]
+      interval: 1s
+      timeout: 5s
+      retries: 60

@@ -1,0 +1,11 @@
+services:
+  rest-server:
+    image: restic/rest-server
+    container_name: rest_server
+    user: 4000:4000
+    environment:
+      OPTIONS: "--append-only --private-repos"
+    volumes:
+      - '/repository:/data'
+    ports:
+      - '80:8000'

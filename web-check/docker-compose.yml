@@ -1,0 +1,12 @@
+services:
+  web-check:
+    image: lissy93/web-check
+    container_name: web-check
+    hostname: web-check
+    restart: unless-stopped
+    mem_limit: 1g
+    memswap_limit: 1g
+    mem_reservation: 256m
+    cpus: 2
+    ports:
+        - '80:3000'
