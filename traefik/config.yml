@@ -167,7 +167,7 @@ http:
           interval: 10s
           timeout: 3s
         servers:
-        - url: "http://100.64.10.1"
+        - url: "http://lxc-searxng-01"
 
     lxc-searxng-02:
       loadBalancer:
@@ -176,7 +176,7 @@ http:
           interval: 10s
           timeout: 3s
         servers:
-        - url: "http://100.64.10.2"
+        - url: "http://lxc-searxng-02"
 
     lxc-searxng-03:
       loadBalancer:
@@ -185,96 +185,96 @@ http:
           interval: 10s
           timeout: 3s
         servers:
-        - url: "http://100.64.10.3"
+        - url: "http://lxc-searxng-03"
 
     lxc-linkwarden:
       loadBalancer:
         servers:
-          - url: "http://100.64.10.4:3000"
+          - url: "http://lxc-linkwarden"
         passHostHeader: true
 
     lxc-bookstack:
       loadBalancer:
         servers:
-          - url: "http://100.64.10.5"
+          - url: "http://lxc-bookstack"
         passHostHeader: true
 
     lxc-it-tools:
       loadBalancer:
         servers:
-          - url: "http://100.64.10.6"
+          - url: "http://lxc-it-tools"
         passHostHeader: true
 
     lxc-paperlessngx:
       loadBalancer:
         servers:
-          - url: "http://100.64.10.7:8000"
+          - url: "http://lxc-paperless-ngx"
         passHostHeader: true
 
     lxc-uptimekuma:
       loadBalancer:
         servers:
-          - url: "http://100.64.10.8"
+          - url: "http://lxc-uptimekuma"
         passHostHeader: true
 
     lxc-web-check:
       loadBalancer:
         servers:
-          - url: "http://100.64.10.9"
+          - url: "http://lxc-web-check"
         passHostHeader: true
 
     lxc-speedtest:
       loadBalancer:
         servers:
-          - url: "http://100.64.10.10"
+          - url: "http://lxc-speedtest"
         passHostHeader: true
 
     lxc-netbootxyz:
       loadBalancer:
         servers:
-          - url: "http://100.64.1.13:3000"
+          - url: "http://lxc-netbootxyz"
         passHostHeader: true
 
     lxc-gotify:
       loadBalancer:
         servers:
-          - url: "http://100.64.10.100"
+          - url: "http://lxc-gotify"
         passHostHeader: true
     
     lxc-technitium-01:
       loadBalancer:
         servers:
-          - url: "http://100.64.100.101:5380"
+          - url: "http://lxc-technitium-01:5380"
         passHostHeader: true
     
     lxc-technitium-02:
       loadBalancer:
         servers:
-          - url: "http://100.64.100.102:5380"
+          - url: "http://lxc-technitium-02:5380"
         passHostHeader: true
     
     lxc-technitium-03:
       loadBalancer:
         servers:
-          - url: "http://100.64.100.103:5380"
+          - url: "http://lxc-technitium-03:5380"
         passHostHeader: true
 
     adguardhome-01:
       loadBalancer:
         servers:
-          - url: "http://100.64.100.201"
+          - url: "http://agh-dns-01"
         passHostHeader: true
     
     adguardhome-02:
       loadBalancer:
         servers:
-          - url: "http://100.64.100.202"
+          - url: "http://agh-dns-02"
         passHostHeader: true
     
     adguardhome-03:
       loadBalancer:
         servers:
-          - url: "http://100.64.100.203"
+          - url: "http://agh-dns-03"
         passHostHeader: true
     
 

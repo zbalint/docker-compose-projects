@@ -50,7 +50,7 @@ services:
       - db
       - broker
     ports:
-      - "8000:8000"
+      - "80:8000"
     volumes:
       - /opt/docker/volumes/paperless-ngx/data:/usr/src/paperless/data
       - /opt/docker/volumes/paperless-ngx/media:/usr/src/paperless/media
