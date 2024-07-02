@@ -9,6 +9,8 @@ services:
     cpus: 2
     dns:
       - 100.100.100.100
+    dns_search:
+      - tail0e99d.ts.net
     security_opt:
       - no-new-privileges:true
     networks:
