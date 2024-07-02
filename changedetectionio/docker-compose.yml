@@ -1,0 +1,13 @@
+services:
+  changedetection.io:
+    image: dgtlmoon/changedetection.io
+    container_name: changedetection.io
+    restart: unless-stopped
+    mem_limit: 1g
+    memswap_limit: 1g
+    mem_reservation: 512m
+    cpus: 4
+    volumes:
+      - '/opt/docker/volumes/changedetectionio/datastore:/datastore'
+    ports:
+      - '80:5000'
