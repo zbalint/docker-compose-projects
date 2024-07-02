@@ -8,7 +8,7 @@ services:
     mem_limit: 512m
     memswap_limit: 512m
     mem_reservation: 384m
-    cpus: 1
+    cpus: 2
     environment:
       PUID: 4000
       GUID: 4000
@@ -35,10 +35,10 @@ services:
     image: tailscale/tailscale:latest
     hostname: ${CT_HOSTNAME}
     restart: unless-stopped
-    mem_limit: 128m
-    memswap_limit: 128m
-    mem_reservation: 64m
-    cpus: 1
+    mem_limit: 256m
+    memswap_limit: 256m
+    mem_reservation: 128m
+    cpus: 2
     expose:
        - 53/tcp
        - 53/udp

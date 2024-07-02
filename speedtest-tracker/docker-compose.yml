@@ -13,7 +13,7 @@ services:
             - PUID=4000
             - PGID=4000
             - APP_KEY=${APP_KEY}
-            - SPEEDTEST_SCHEDULE=0 * * * *
+            - SPEEDTEST_SCHEDULE=*/15 * * * *
             - DB_CONNECTION=sqlite
             - TZ=Europe/Budapest
             - DISPLAY_TIMEZONE=Europe/Budapest
