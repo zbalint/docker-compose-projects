@@ -91,6 +91,15 @@ http:
         - https-redirectscheme
       tls: {}
       service: lxc-speedtest
+    lxc-stirlingpdf:
+      entryPoints:
+        - "https"
+      rule: "Host(`stirlingpdf.lab.escapethelan.com`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: lxc-stirlingpdf
     lxc-technitium-01:
       entryPoints:
         - "https"
@@ -227,6 +236,12 @@ http:
       loadBalancer:
         servers:
           - url: "http://lxc-speedtest"
+        passHostHeader: true
+
+    lxc-stirlingpdf:
+      loadBalancer:
+        servers:
+          - url: "http://lxc-stirlingpdf"
         passHostHeader: true
 
     lxc-netbootxyz:
