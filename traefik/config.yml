@@ -109,6 +109,15 @@ http:
         - https-redirectscheme
       tls: {}
       service: lxc-changedetectionio
+    lxc-rxresume:
+      entryPoints:
+        - "https"
+      rule: "Host(`rxresume.lab.escapethelan.com`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: lxc-rxresume
     lxc-technitium-01:
       entryPoints:
         - "https"
@@ -257,6 +266,12 @@ http:
       loadBalancer:
         servers:
           - url: "http://lxc-changedetectionio"
+        passHostHeader: true
+
+    lxc-rxresume:
+      loadBalancer:
+        servers:
+          - url: "http://lxc-rxresume"
         passHostHeader: true
 
     lxc-netbootxyz:
