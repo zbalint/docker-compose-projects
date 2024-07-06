@@ -118,6 +118,24 @@ http:
         - https-redirectscheme
       tls: {}
       service: lxc-rxresume
+    lxc-docmost:
+      entryPoints:
+        - "https"
+      rule: "Host(`docmost.lab.escapethelan.com`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: lxc-docmost
+    lxc-redlib:
+      entryPoints:
+        - "https"
+      rule: "Host(`redlib.lab.escapethelan.com`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: lxc-redlib
     lxc-technitium-01:
       entryPoints:
         - "https"
@@ -272,6 +290,18 @@ http:
       loadBalancer:
         servers:
           - url: "http://lxc-rxresume"
+        passHostHeader: true
+    
+    lxc-docmost:
+      loadBalancer:
+        servers:
+          - url: "http://lxc-docmost"
+        passHostHeader: true
+
+    lxc-redlib:
+      loadBalancer:
+        servers:
+          - url: "http://lxc-redlib"
         passHostHeader: true
 
     lxc-netbootxyz:
