@@ -3,12 +3,18 @@ services:
     image: adguard/adguardhome
     container_name: adguardhome
     restart: unless-stopped
-    network_mode: service:tailscale
     # user: 4000:4000
-    mem_limit: 512m
-    memswap_limit: 512m
+    mem_limit: 640m
+    memswap_limit: 640m
     mem_reservation: 384m
     cpus: 2
+    ports:
+       - ${BIND_ADDRESS:-127.0.0.1}:53:53/tcp
+       - ${BIND_ADDRESS:-127.0.0.1}:53:53/udp
+       - ${BIND_ADDRESS:-127.0.0.1}:80:80/tcp
+       - ${BIND_ADDRESS:-127.0.0.1}:443:443/tcp
+       - ${BIND_ADDRESS:-127.0.0.1}:784:784/udp
+       - ${BIND_ADDRESS:-127.0.0.1}:853:853/tcp
     environment:
       PUID: 4000
       GUID: 4000
@@ -21,48 +27,13 @@ services:
       - all
     cap_add:
       - net_bind_service
+      - net_admin
+      - net_raw
+      - sys_module
     security_opt:
       - no-new-privileges
     healthcheck:
       test: ["CMD-SHELL", "wget --spider 127.0.0.1:80"]
-      interval: 1s
-      timeout: 5s
-      retries: 60
-    depends_on:
-      tailscale:
-        condition: service_healthy
-  tailscale:
-    image: tailscale/tailscale:latest
-    hostname: ${CT_HOSTNAME}
-    restart: unless-stopped
-    mem_limit: 256m
-    memswap_limit: 256m
-    mem_reservation: 128m
-    cpus: 2
-    expose:
-       - 53/tcp
-       - 53/udp
-       - 80/tcp
-       - 443/tcp
-       - 784/udp
-       - 853/tcp
-    environment:
-      - TS_AUTHKEY=${TS_AUTHKEY}
-      - TS_EXTRA_ARGS=--advertise-tags=tag:container --accept-dns=false --stateful-filtering=false
-      # - TS_SERVE_CONFIG=/config/tailscale.json
-      - TS_STATE_DIR=/var/lib/tailscale
-    volumes:
-      - "/opt/docker/volumes/adguardhome/tailscale/state:/var/lib/tailscale"
-      - "/opt/docker/stacks/adguardhome/tailscale.json:/config/tailscale.json:ro"
-      - "/dev/net/tun:/dev/net/tun"
-    cap_add:
-      - net_admin
-      - sys_module
-      - net_raw    
-    security_opt:
-      - no-new-privileges
-    healthcheck:
-      test: ["CMD-SHELL", "tailscale status"]
       interval: 1s
       timeout: 5s
       retries: 60

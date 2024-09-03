@@ -190,6 +190,24 @@ http:
         - https-redirectscheme
       tls: {}
       service: adguardhome-03
+    jellyfin:
+      entryPoints:
+        - "https"
+      rule: "Host(`jellyfin.lab.escapethelan.com`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: jellyfin
+    emby:
+      entryPoints:
+        - "https"
+      rule: "Host(`emby.lab.escapethelan.com`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: emby    
 
 #endregion
 #region services
@@ -337,19 +355,31 @@ http:
     adguardhome-01:
       loadBalancer:
         servers:
-          - url: "http://agh-dns-01"
+          - url: "http://srv01-prd-defra-oci"
         passHostHeader: true
     
     adguardhome-02:
       loadBalancer:
         servers:
-          - url: "http://agh-dns-02"
+          - url: "http://srv02-prd-defra-oci"
         passHostHeader: true
     
     adguardhome-03:
       loadBalancer:
         servers:
-          - url: "http://agh-dns-03"
+          - url: "http://lxc-agh-dns-03"
+        passHostHeader: true
+    
+    jellyfin:
+      loadBalancer:
+        servers:
+          - url: "http://lxc-sevenseas:8196"
+        passHostHeader: true
+    
+    emby:
+      loadBalancer:
+        servers:
+          - url: "http://lxc-sevenseas:8096"
         passHostHeader: true
     
 
