@@ -1,12 +1,29 @@
 services:
   it-tools:
-    image: corentinth/it-tools
-    container_name: it-tools
+    image: corentinth/it-tools:2024.5.13-a0bc346
     hostname: it-tools
+    container_name: it-tools
     restart: unless-stopped
     mem_limit: 512m
     memswap_limit: 512m
     mem_reservation: 256m
-    cpus: 2
+    cpus: 1
+    dns:
+      - 100.100.100.100
+    # unfortunatly this image can't run as unprivileged
+    # user: 4000:4000
     ports:
-      - 80:80/tcp
+      - ${BIND_ADDRESS:-127.0.0.1}:8080:80/tcp
+    cap_drop:
+      - all
+    cap_add:
+      - chown
+      - setgid
+      - setuid
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: ["CMD-SHELL", "wget --spider 127.0.0.1:80"]
+      interval: 1s
+      timeout: 5s
+      retries: 60

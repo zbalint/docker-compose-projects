@@ -1,0 +1,15 @@
+services:
+  watchyourlan:
+    image: 'aceberg/watchyourlan:v2'
+    container_name: WatchYourLAN
+    restart: unless-stopped
+    mem_limit: 512m
+    memswap_limit: 512m
+    mem_reservation: 256m
+    cpus: 2
+    volumes:
+      - '/opt/docker/volumes/WatchYourLAN:/data/WatchYourLAN'
+    network_mode: host
+    environment:
+      - TZ=Europe/Budapest
+      - IFACES=$YOURIFACE

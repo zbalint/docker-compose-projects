@@ -1,4 +1,3 @@
----
 services:
   bookstack:
     image: lscr.io/linuxserver/bookstack
@@ -7,13 +6,18 @@ services:
     mem_limit: 512m
     memswap_limit: 512m
     mem_reservation: 256m
-    cpus: 2
+    cpus: 1
+    dns:
+      - 100.100.100.100
+    networks:
+      stack_network:
+        ipv4_address: 10.0.0.2
     environment:
       - PUID=4000
       - PGID=4000
       - TZ=Europe/Budapest
-      - APP_URL=https://bookstack.lab.escapethelan.com
-      - DB_HOST=bookstack_db
+      - APP_URL=https://${DOMAIN}
+      - DB_HOST=10.0.0.3
       - DB_PORT=3306
       - DB_USER=bookstack
       - DB_PASS=${DATABASE_PASSWORD}
@@ -32,7 +36,12 @@ services:
     mem_limit: 512m
     memswap_limit: 512m
     mem_reservation: 256m
-    cpus: 2
+    cpus: 1
+    dns:
+      - 100.100.100.100
+    networks:
+      stack_network:
+        ipv4_address: 10.0.0.3
     environment:
       - PUID=1000
       - PGID=1000
@@ -43,3 +52,10 @@ services:
       - MYSQL_PASSWORD=${DATABASE_PASSWORD}
     volumes:
       - /opt/docker/volumes/bookstack/mariadb:/config
+
+networks:
+  stack_network:
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.0.0.0/24

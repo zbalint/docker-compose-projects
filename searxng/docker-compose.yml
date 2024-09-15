@@ -3,18 +3,29 @@ services:
     image: searxng/searxng:latest
     container_name: searxng
     restart: unless-stopped
-    mem_limit: 1g
-    memswap_limit: 1g
-    mem_reservation: 512m
-    cpus: 2
+    mem_limit: 512m
+    memswap_limit: 512m
+    mem_reservation: 256m
+    cpus: 1
+    dns:
+      - 100.100.100.100
+    network_mode: "bridge"
+    # unfortunatly this image can't run as unprivileged
+    # user: 4000:4000
     ports:
-      - 80:8080
+      - ${BIND_ADDRESS:-127.0.0.1}:8080:8080/tcp
     environment:
       - TZ=Europe/Budapest
       - BASE_URL=https://${DOMAIN}
       - INSTANCE_NAME=${INSTANCE_NAME}
     volumes:
       - /opt/docker/volumes/searxng/appdata:/etc/searxng
+    cap_drop:
+      - all
+    cap_add:
+      # - chown
+      - setgid
+      - setuid
     security_opt:
       - no-new-privileges
     healthcheck:

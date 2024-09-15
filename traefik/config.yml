@@ -1,6 +1,15 @@
 http:
  #region routers 
   routers:
+    lxc-backup:
+      entryPoints:
+        - "https"
+      rule: "Host(`restia.lab.escapethelan.com`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: lxc-backup
     lxc-searxng:
       entryPoints:
         - "https"
@@ -250,6 +259,12 @@ http:
         servers:
         - url: "http://lxc-searxng-03"
 
+    lxc-backup:
+      loadBalancer:
+        servers:
+          - url: "http://lxc-backup:8080"
+        passHostHeader: true
+
     lxc-linkwarden:
       loadBalancer:
         servers:
@@ -265,7 +280,7 @@ http:
     lxc-it-tools:
       loadBalancer:
         servers:
-          - url: "http://lxc-it-tools"
+          - url: "http://lxc-it-tools:8080"
         passHostHeader: true
 
     lxc-paperlessngx:
