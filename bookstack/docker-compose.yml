@@ -25,9 +25,16 @@ services:
     volumes:
       - /opt/docker/volumes/bookstack/config:/config
     ports:
-      - 80:80
+      - ${BIND_ADDRESS:-127.0.0.1}:8080:80/tcp
+    security_opt:
+      - no-new-privileges:true
     depends_on:
       - bookstack_db
+    healthcheck:
+      test: ["CMD-SHELL", "wget --spider 127.0.0.1:80"]
+      interval: 1s
+      timeout: 5s
+      retries: 60
 
   bookstack_db:
     image: lscr.io/linuxserver/mariadb
@@ -39,12 +46,14 @@ services:
     cpus: 1
     dns:
       - 100.100.100.100
+    security_opt:
+      - no-new-privileges:true    
     networks:
       stack_network:
         ipv4_address: 10.0.0.3
     environment:
-      - PUID=1000
-      - PGID=1000
+      - PUID=4000
+      - PGID=4000
       - TZ=Europe/London
       - MYSQL_ROOT_PASSWORD=${DATABASE_ROOT_PASSWORD}
       - MYSQL_DATABASE=bookstackapp

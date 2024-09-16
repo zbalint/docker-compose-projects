@@ -274,7 +274,7 @@ http:
     lxc-bookstack:
       loadBalancer:
         servers:
-          - url: "http://lxc-bookstack"
+          - url: "http://lxc-bookstack:8080"
         passHostHeader: true
 
     lxc-it-tools:
