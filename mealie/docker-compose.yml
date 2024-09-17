@@ -9,54 +9,25 @@ services:
     memswap_limit: 256m
     mem_reservation: 128m
     cpus: 1
+    dns:
+      - 100.100.100.100
+    ports:
+      - ${BIND_ADDRESS:-127.0.0.1}:8080:9000/tcp
     environment:
       - TZ=Europe/Budapest
       - ALLOW_SIGNUP=true
     volumes:
       - /opt/docker/volumes/mealie/appdata:/app/data
-      - /opt/docker/stacks:/opt/docker/stacks
     cap_drop:
       - all
-    cap_add:
-      - chown
-      - setuid
-      - setgid
-      - net_bind_service
+    # cap_add:
+      # - chown
+      # - setuid
+      # - setgid
     security_opt:
       - no-new-privileges
     healthcheck:
       test: ["CMD-SHELL", "ss -nputwl | grep LISTEN | grep 9000"]
-      interval: 1s
-      timeout: 5s
-      retries: 60
-    depends_on:
-      tailscale:
-        condition: service_healthy
-  tailscale:
-    image: tailscale/tailscale:latest
-    hostname: ${CT_HOSTNAME}
-    restart: unless-stopped
-    mem_limit: 64m
-    memswap_limit: 64m
-    mem_reservation: 32m
-    cpus: 1
-    environment:
-      - TS_AUTHKEY=${TS_AUTHKEY}
-      - TS_EXTRA_ARGS=--advertise-tags=tag:container
-      - TS_SERVE_CONFIG=/config/tailscale.json
-      - TS_STATE_DIR=/var/lib/tailscale
-    volumes:
-      - "/opt/docker/volumes/mealie/tailscale/state:/var/lib/tailscale"
-      - "/opt/docker/stacks/mealie/tailscale.json:/config/tailscale.json:ro"
-      - "/dev/net/tun:/dev/net/tun"
-    cap_add:
-      - net_admin
-      - sys_module
-      - net_raw    
-    security_opt:
-      - no-new-privileges
-    healthcheck:
-      test: ["CMD-SHELL", "tailscale status"]
       interval: 1s
       timeout: 5s
       retries: 60

@@ -1,0 +1,309 @@
+storage:
+  type: sqlite
+  path: /data/data.db
+
+maintenance:
+  start: 04:00
+  duration: 1h
+  timezone: "Europe/Budapest"
+
+alerting:
+  gotify:
+    server-url: "https://gotify.lab.escapethelan.com"
+    token: "AG_kTzTqZGfugmT"
+    default-alert:
+      description: "Healthcheck failed!"
+      send-on-resolved: true
+      failure-threshold: 5
+      success-threshold: 5
+  discord:
+    webhook-url: "https://discord.com/api/webhooks/1285575656943521823/MAegGeKjxlTX_Lx184oCA-4rGO_z8coqrPhGGdnX5f2Gw1zgJLaPdxTBJ_kZweClGJwd"
+    default-alert:
+      description: "Healthcheck failed!"
+      send-on-resolved: true
+      failure-threshold: 5
+      success-threshold: 5
+
+default-proxy-endpoint: &proxy-defaults
+  group: proxys
+  interval: 1m
+  client:
+    insecure: true
+    timeout: 10s
+  conditions:
+    - "[STATUS] == 404"
+    - "[RESPONSE_TIME] < 500"
+  alerts:
+      - type: gotify
+      - type: discord
+
+default-service-endpoint: &service-defaults
+  group: services
+  interval: 1m
+  client:
+    insecure: false
+    timeout: 10s
+  conditions:
+    - "[STATUS] == 200"
+    - "[RESPONSE_TIME] < 5000"
+  alerts:
+      - type: gotify
+      - type: discord
+
+default-server-endpoint: &server-defaults
+    interval: 30s
+    group: servers
+    conditions:
+      - "[CONNECTED] == true"
+    alerts:
+      - type: gotify
+      - type: discord
+
+default-lxc-endpoint: &lxc-defaults
+    interval: 30s
+    group: lxc-containers
+    conditions:
+      - "[CONNECTED] == true"
+    alerts:
+      - type: gotify
+      - type: discord
+
+endpoints:
+  - name: traefik-node-01
+    url: "https://lxc-traefik-01.tail0e99d.ts.net"
+    <<: *proxy-defaults
+
+  - name: traefik-node-02
+    url: "https://lxc-traefik-02.tail0e99d.ts.net"
+    <<: *proxy-defaults
+
+  - name: traefik-node-03
+    url: "https://lxc-traefik-03.tail0e99d.ts.net"
+    <<: *proxy-defaults
+        
+  - name: restia.lab.escapethelan.com
+    url: "https://restia.lab.escapethelan.com"
+    <<: *service-defaults
+        
+  - name: status.lab.escapethelan.com
+    url: "https://status.lab.escapethelan.com"
+    <<: *service-defaults
+        
+  - name: searxng.lab.escapethelan.com
+    url: "https://searxng.lab.escapethelan.com"
+    <<: *service-defaults
+        
+  - name: gotify.lab.escapethelan.com
+    url: "https://gotify.lab.escapethelan.com"
+    <<: *service-defaults
+        
+  - name: netbootxyz.lab.escapethelan.com
+    url: "https://netbootxyz.lab.escapethelan.com"
+    <<: *service-defaults
+        
+  - name: paperless.lab.escapethelan.com
+    url: "https://paperless.lab.escapethelan.com"
+    <<: *service-defaults
+        
+  - name: uptimekuma.lab.escapethelan.com
+    url: "https://uptimekuma.lab.escapethelan.com"
+    <<: *service-defaults
+        
+  - name: linkwarden.lab.escapethelan.com
+    url: "https://linkwarden.lab.escapethelan.com"
+    <<: *service-defaults
+        
+  - name: bookstack.lab.escapethelan.com
+    url: "https://bookstack.lab.escapethelan.com"
+    <<: *service-defaults
+        
+  - name: ittools.lab.escapethelan.com
+    url: "https://ittools.lab.escapethelan.com"
+    <<: *service-defaults
+        
+  - name: webcheck.lab.escapethelan.com
+    url: "https://webcheck.lab.escapethelan.com"
+    <<: *service-defaults
+        
+  - name: speedtest.lab.escapethelan.com
+    url: "https://speedtest.lab.escapethelan.com"
+    <<: *service-defaults
+        
+  - name: stirlingpdf.lab.escapethelan.com
+    url: "https://stirlingpdf.lab.escapethelan.com"
+    <<: *service-defaults
+        
+  - name: changedetectionio.lab.escapethelan.com
+    url: "https://changedetectionio.lab.escapethelan.com"
+    <<: *service-defaults
+        
+  - name: rxresume.lab.escapethelan.com
+    url: "https://rxresume.lab.escapethelan.com"
+    <<: *service-defaults
+        
+  - name: redlib.lab.escapethelan.com
+    url: "https://redlib.lab.escapethelan.com"
+    <<: *service-defaults
+        
+  - name: tcdns01.lab.escapethelan.com
+    url: "https://tcdns01.lab.escapethelan.com"
+    <<: *service-defaults
+        
+  - name: tcdns02.lab.escapethelan.com
+    url: "https://tcdns02.lab.escapethelan.com"
+    <<: *service-defaults
+        
+  - name: tcdns03.lab.escapethelan.com
+    url: "https://tcdns03.lab.escapethelan.com"
+    <<: *service-defaults
+        
+  - name: aghdns01.lab.escapethelan.com
+    url: "https://aghdns01.lab.escapethelan.com"
+    <<: *service-defaults
+        
+  - name: aghdns02.lab.escapethelan.com
+    url: "https://aghdns02.lab.escapethelan.com"
+    <<: *service-defaults
+        
+  - name: aghdns03.lab.escapethelan.com
+    url: "https://aghdns03.lab.escapethelan.com"
+    <<: *service-defaults
+        
+  - name: jellyfin.lab.escapethelan.com
+    url: "https://jellyfin.lab.escapethelan.com"
+    <<: *service-defaults
+        
+  - name: emby.lab.escapethelan.com
+    url: "https://emby.lab.escapethelan.com"
+    <<: *service-defaults
+        
+
+  - name: srv01-prd-huhbh-lan
+    url: "icmp://srv01-prd-huhbh-lan.tail0e99d.ts.net"
+    <<: *server-defaults
+
+  - name: srv02-prd-huhbh-lan
+    url: "icmp://srv02-prd-huhbh-lan.tail0e99d.ts.net"
+    <<: *server-defaults
+
+  - name: srv01-prd-defra-lux
+    url: "icmp://srv01-prd-defra-lux.tail0e99d.ts.net"
+    <<: *server-defaults
+
+  - name: srv02-prd-defra-lux
+    url: "icmp://srv02-prd-defra-lux.tail0e99d.ts.net"
+    <<: *server-defaults
+
+  - name: srv01-prd-defra-oci
+    url: "icmp://srv01-prd-defra-oci.tail0e99d.ts.net"
+    <<: *server-defaults
+
+  - name: srv02-prd-defra-oci
+    url: "icmp://srv02-prd-defra-oci.tail0e99d.ts.net"
+    <<: *server-defaults
+
+  - name: srv01-prd-usmnk-gcp
+    url: "icmp://srv01-prd-usmnk-gcp.tail0e99d.ts.net"
+    <<: *server-defaults
+
+    
+  - name: lxc-agh-dns-03
+    url: "icmp://lxc-agh-dns-03.tail0e99d.ts.net"
+    <<: *lxc-defaults
+
+  - name: lxc-traefik-01
+    url: "icmp://lxc-traefik-01.tail0e99d.ts.net"
+    <<: *lxc-defaults
+
+  - name: lxc-traefik-02
+    url: "icmp://lxc-traefik-02.tail0e99d.ts.net"
+    <<: *lxc-defaults
+
+  - name: lxc-traefik-03
+    url: "icmp://lxc-traefik-03.tail0e99d.ts.net"
+    <<: *lxc-defaults
+
+  - name: lxc-searxng-01
+    url: "icmp://lxc-searxng-01.tail0e99d.ts.net"
+    <<: *lxc-defaults
+
+  - name: lxc-searxng-02
+    url: "icmp://lxc-searxng-02.tail0e99d.ts.net"
+    <<: *lxc-defaults
+
+  - name: lxc-searxng-03
+    url: "icmp://lxc-searxng-03.tail0e99d.ts.net"
+    <<: *lxc-defaults
+
+  - name: lxc-technitium-01
+    url: "icmp://lxc-technitium-01.tail0e99d.ts.net"
+    <<: *lxc-defaults
+
+  - name: lxc-technitium-02
+    url: "icmp://lxc-technitium-02.tail0e99d.ts.net"
+    <<: *lxc-defaults
+
+  - name: lxc-technitium-03
+    url: "icmp://lxc-technitium-03.tail0e99d.ts.net"
+    <<: *lxc-defaults
+
+  - name: lxc-netbootxyz
+    url: "icmp://lxc-netbootxyz.tail0e99d.ts.net"
+    <<: *lxc-defaults
+
+  - name: lxc-adguardhome-sync
+    url: "icmp://lxc-adguardhome-sync.tail0e99d.ts.net"
+    <<: *lxc-defaults
+
+  - name: lxc-paperless-ngx
+    url: "icmp://lxc-paperless-ngx.tail0e99d.ts.net"
+    <<: *lxc-defaults
+
+  - name: lxc-linkwarden
+    url: "icmp://lxc-linkwarden.tail0e99d.ts.net"
+    <<: *lxc-defaults
+
+  - name: lxc-bookstack
+    url: "icmp://lxc-bookstack.tail0e99d.ts.net"
+    <<: *lxc-defaults
+
+  - name: lxc-it-tools
+    url: "icmp://lxc-it-tools.tail0e99d.ts.net"
+    <<: *lxc-defaults
+
+  - name: lxc-web-check
+    url: "icmp://lxc-web-check.tail0e99d.ts.net"
+    <<: *lxc-defaults
+
+  - name: lxc-gotify
+    url: "icmp://lxc-gotify.tail0e99d.ts.net"
+    <<: *lxc-defaults
+
+  - name: lxc-uptimekuma
+    url: "icmp://lxc-uptimekuma.tail0e99d.ts.net"
+    <<: *lxc-defaults
+
+  - name: lxc-speedtest
+    url: "icmp://lxc-speedtest.tail0e99d.ts.net"
+    <<: *lxc-defaults
+
+  - name: lxc-stirlingpdf
+    url: "icmp://lxc-stirlingpdf.tail0e99d.ts.net"
+    <<: *lxc-defaults
+
+  - name: lxc-changedetectionio
+    url: "icmp://lxc-changedetectionio.tail0e99d.ts.net"
+    <<: *lxc-defaults
+
+  - name: lxc-redlib
+    url: "icmp://lxc-redlib.tail0e99d.ts.net"
+    <<: *lxc-defaults
+
+  - name: lxc-rxresume
+    url: "icmp://lxc-rxresume.tail0e99d.ts.net"
+    <<: *lxc-defaults
+
+  - name: lxc-sevenseas
+    url: "icmp://lxc-sevenseas.tail0e99d.ts.net"
+    <<: *lxc-defaults
+

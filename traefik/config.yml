@@ -1,6 +1,16 @@
 http:
  #region routers 
   routers:
+     # helth check service
+    ping:
+      entryPoints:
+        - "https"
+      rule: "Host(`traefik.lab.escapethelan.com`)"
+      service: ping@internal
+      tls: {}
+      middlewares:
+        - default-headers
+        - https-redirectscheme
     lxc-backup:
       entryPoints:
         - "https"
@@ -10,6 +20,15 @@ http:
         - https-redirectscheme
       tls: {}
       service: lxc-backup
+    lxc-gatus:
+      entryPoints:
+        - "https"
+      rule: "Host(`status.lab.escapethelan.com`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: lxc-gatus
     lxc-searxng:
       entryPoints:
         - "https"
@@ -263,6 +282,12 @@ http:
       loadBalancer:
         servers:
           - url: "http://lxc-backup:8080"
+        passHostHeader: true
+    
+    lxc-gatus:
+      loadBalancer:
+        servers:
+          - url: "http://lxc-gatus:8080"
         passHostHeader: true
 
     lxc-linkwarden:

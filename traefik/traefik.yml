@@ -11,12 +11,15 @@ entryPoints:
           scheme: https
   https:
     address: ":443"
+ping:
+  entryPoint: https
+  manualRouting: true
 serversTransport:
   insecureSkipVerify: true
 providers:
-  docker:
-    endpoint: "unix:///var/run/docker.sock"
-    exposedByDefault: false
+  # docker:
+  #   endpoint: "unix:///var/run/docker.sock"
+  #   exposedByDefault: false
   file:
     filename: /config.yml
 certificatesResolvers:
