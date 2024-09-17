@@ -29,6 +29,15 @@ http:
         - https-redirectscheme
       tls: {}
       service: lxc-gatus
+    lxc-fusion:
+      entryPoints:
+        - "https"
+      rule: "Host(`fusion.lab.escapethelan.com`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: lxc-fusion
     lxc-searxng:
       entryPoints:
         - "https"
@@ -288,6 +297,12 @@ http:
       loadBalancer:
         servers:
           - url: "http://lxc-gatus:8080"
+        passHostHeader: true
+
+    lxc-fusion:
+      loadBalancer:
+        servers:
+          - url: "http://lxc-fusion:8080"
         passHostHeader: true
 
     lxc-linkwarden:
