@@ -1,0 +1,29 @@
+services:
+  beszel:
+    container_name: beszel
+    image: henrygd/beszel:0.6.2
+    read_only: true
+    hostname: beszel
+    restart: unless-stopped
+    mem_limit: 1024m
+    memswap_limit: 1024m
+    mem_reservation: 256m
+    cpus: 1
+    # user: 4000:4000
+    dns:
+      - 100.100.100.100
+    network_mode: "bridge"
+    cap_drop:
+      - all
+    security_opt:
+      - no-new-privileges:true
+    ports:
+      - ${BIND_ADDRESS:-127.0.0.1}:8080:8090/tcp
+    volumes:
+      - /opt/docker/volumes/beszel/beszel_data:/beszel_data
+    # The container dockerfile specifys it's own healthcheck
+    healthcheck:
+      test: ["CMD-SHELL", "wget --spider 127.0.0.1:8090"]
+      interval: 10s
+      timeout: 5s
+      retries: 60

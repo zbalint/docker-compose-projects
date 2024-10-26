@@ -1,24 +1,23 @@
 services:
   redlib:
-    image: quay.io/redlib/redlib:latest
-    restart: always
     container_name: "redlib"
-    ports:
-      - 80:8080 # Specify `127.0.0.1:8080:8080` instead if using a reverse proxy
-    user: nobody
+    image: quay.io/redlib/redlib:latest
     read_only: true
+    restart: unless-stopped
+    mem_limit: 512m
+    memswap_limit: 512m
+    mem_reservation: 256m
+    user: nobody
+    dns:
+      - 100.100.100.100
+    network_mode: bridge
+    ports:
+      - ${BIND_ADDRESS:-127.0.0.1}:8080:8080/tcp # Specify `127.0.0.1:8080:8080` instead if using a reverse proxy
+    cap_drop:
+      - all
     security_opt:
       - no-new-privileges:true
-      # - seccomp=seccomp-redlib.json
-    cap_drop:
-      - ALL
-    # env_file: .env
-    networks:
-      - redlib
     healthcheck:
       test: ["CMD", "wget", "--spider", "-q", "--tries=1", "http://localhost:8080/settings"]
       interval: 5m
       timeout: 3s
-
-networks:
-  redlib:

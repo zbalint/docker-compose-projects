@@ -1,14 +1,28 @@
 services:
   stirling-pdf:
-    image: frooodle/s-pdf:latest
     container_name: stirlingpdf
+    image: frooodle/s-pdf:latest
+    # read_only: true
+    hostname: stirlingpdf
     restart: unless-stopped
-    mem_limit: 1g
-    memswap_limit: 1g
-    mem_reservation: 512m
-    cpus: 2
+    mem_limit: 1024m
+    memswap_limit: 1024m
+    mem_reservation: 384m
+    cpus: 1
+    # user: 4000:4000
+    dns:
+      - 100.100.100.100
+    network_mode: "bridge"
+    # cap_drop:
+    #   - all
+    # cap_add:
+    #   - chown
+    #   - setgid
+    #   - setuid
+    security_opt:
+      - no-new-privileges
     ports:
-      - '80:8080'
+       - ${BIND_ADDRESS:-127.0.0.1}:8080:8080/tcp
     environment:
       - DOCKER_ENABLE_SECURITY=false
       - INSTALL_BOOK_AND_ADVANCED_HTML_OPS=false
@@ -16,5 +30,10 @@ services:
     volumes:
       - /opt/docker/volumes/stirlingpdf/trainingData:/usr/share/tessdata #Required for extra OCR languages
       - /opt/docker/volumes/stirlingpdf/extraConfigs:/configs
-#      - ./customFiles:/customFiles/
-#      - ./logs:/logs/
+    # tmpfs:
+    #   - /logs
+    healthcheck:
+      test: ["CMD-SHELL", "wget --spider 127.0.0.1:8080"]
+      interval: 10s
+      timeout: 5s
+      retries: 60

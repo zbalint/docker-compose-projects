@@ -244,7 +244,34 @@ http:
         - default-headers
         - https-redirectscheme
       tls: {}
-      service: emby    
+      service: emby
+    beszel:
+      entryPoints:
+        - "https"
+      rule: "Host(`beszel.lab.escapethelan.com`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: beszel
+    foldingathome-01:
+      entryPoints:
+        - "https"
+      rule: "Host(`foldingathome-01.lab.escapethelan.com`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: foldingathome-01
+    foldingathome-02:
+      entryPoints:
+        - "https"
+      rule: "Host(`foldingathome-02.lab.escapethelan.com`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: foldingathome-02
 
 #endregion
 #region services
@@ -350,7 +377,7 @@ http:
     lxc-stirlingpdf:
       loadBalancer:
         servers:
-          - url: "http://lxc-stirlingpdf"
+          - url: "http://lxc-stirlingpdf:8080"
         passHostHeader: true
 
     lxc-changedetectionio:
@@ -374,7 +401,7 @@ http:
     lxc-redlib:
       loadBalancer:
         servers:
-          - url: "http://lxc-redlib"
+          - url: "http://lxc-redlib:8080"
         passHostHeader: true
 
     lxc-netbootxyz:
@@ -386,7 +413,7 @@ http:
     lxc-gotify:
       loadBalancer:
         servers:
-          - url: "http://lxc-gotify"
+          - url: "http://lxc-gotify:8080"
         passHostHeader: true
     
     lxc-technitium-01:
@@ -422,7 +449,7 @@ http:
     adguardhome-03:
       loadBalancer:
         servers:
-          - url: "http://lxc-agh-dns-03"
+          - url: "http://lxc-agh-dns-03:8080"
         passHostHeader: true
     
     jellyfin:
@@ -435,6 +462,24 @@ http:
       loadBalancer:
         servers:
           - url: "http://lxc-sevenseas:8096"
+        passHostHeader: true
+
+    beszel:
+      loadBalancer:
+        servers:
+          - url: "http://lxc-beszel:8080"
+        passHostHeader: true
+    
+    foldingathome-01:
+      loadBalancer:
+        servers:
+          - url: "http://lxc-foldingathome-01:8080"
+        passHostHeader: true
+    
+    foldingathome-02:
+      loadBalancer:
+        servers:
+          - url: "http://lxc-foldingathome-02:8080"
         passHostHeader: true
     
 

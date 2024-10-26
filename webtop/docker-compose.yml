@@ -1,0 +1,25 @@
+services:
+  webtop:
+    container_name: webtop
+    image: lscr.io/linuxserver/webtop:debian-xfce
+    restart: unless-stopped
+    mem_limit: 2g
+    memswap_limit: 2g
+    mem_reservation: 512m
+    cpus: 2
+    dns:
+      - 100.100.100.100
+    network_mode: bridge
+    ports:
+      - 3000:3000
+      - 3001:3001
+    security_opt:
+      # - seccomp:unconfined #optional
+      - no-new-privileges:true
+    environment:
+      - PUID=4000
+      - PGID=4000
+      - TZ=Europe/Budapest
+      - TITLE=Webtop #optional
+    volumes:
+      - /opt/docker/volumes/webtop/config:/config

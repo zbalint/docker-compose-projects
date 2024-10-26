@@ -1,0 +1,31 @@
+services:
+  foldingathome:
+    image: linuxserver/foldingathome:latest
+    hostname: foldingathome
+    container_name: foldingathome
+    restart: unless-stopped
+    mem_limit: 1g
+    memswap_limit: 1g
+    mem_reservation: 256m
+    cpus: 2
+    # user: 4000:4000
+    dns:
+      - 100.100.100.100
+    network_mode: "bridge"
+    security_opt:
+      - no-new-privileges:true
+    ports:
+      - ${BIND_ADDRESS:-127.0.0.1}:8080:7396/tcp
+    volumes:
+      - /opt/docker/volumes/foldingathome/config:/config
+    environment:
+      - PUID=4000
+      - PGID=4000
+      - TZ=Europe/Budapest
+      - ACCOUNT_TOKEN=${ACCOUNT_TOKEN}
+      - MACHINE_NAME=${MACHINE_NAME}
+    healthcheck:
+      test: ["CMD-SHELL", "wget --spider 127.0.0.1:7396"]
+      interval: 10s
+      timeout: 5s
+      retries: 60
