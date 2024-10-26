@@ -23,6 +23,6 @@ services:
       - PASSWORD=${PASSWORD}
     healthcheck:
       test: ["CMD-SHELL", "wget --spider 127.0.0.1:8080"]
-      interval: 1s
+      interval: 10s
       timeout: 5s
       retries: 60

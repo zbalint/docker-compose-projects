@@ -27,7 +27,7 @@ services:
       - no-new-privileges
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://127.0.0.1:5001"]
-      interval: 1s
+      interval: 10s
       timeout: 5s
       retries: 60
     depends_on:
@@ -58,6 +58,6 @@ services:
       - no-new-privileges
     healthcheck:
       test: ["CMD-SHELL", "tailscale status"]
-      interval: 1s
+      interval: 10s
       timeout: 5s
       retries: 60

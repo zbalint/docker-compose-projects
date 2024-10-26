@@ -12,14 +12,14 @@ alerting:
     server-url: "https://gotify.lab.escapethelan.com"
     token: "AG_kTzTqZGfugmT"
     default-alert:
-      description: "Healthcheck failed!"
+      description: "Healthcheck!"
       send-on-resolved: true
       failure-threshold: 2
       success-threshold: 3
   discord:
     webhook-url: "https://discord.com/api/webhooks/1285575656943521823/MAegGeKjxlTX_Lx184oCA-4rGO_z8coqrPhGGdnX5f2Gw1zgJLaPdxTBJ_kZweClGJwd"
     default-alert:
-      description: "Healthcheck failed!"
+      description: "Healthcheck!"
       send-on-resolved: true
       failure-threshold: 2
       success-threshold: 3
@@ -120,10 +120,6 @@ endpoints:
     url: "https://paperless.lab.escapethelan.com"
     <<: *service-defaults
         
-  - name: uptimekuma.lab.escapethelan.com
-    url: "https://uptimekuma.lab.escapethelan.com"
-    <<: *service-defaults
-        
   - name: linkwarden.lab.escapethelan.com
     url: "https://linkwarden.lab.escapethelan.com"
     <<: *service-defaults
@@ -146,14 +142,6 @@ endpoints:
         
   - name: stirlingpdf.lab.escapethelan.com
     url: "https://stirlingpdf.lab.escapethelan.com"
-    <<: *service-defaults
-        
-  - name: changedetectionio.lab.escapethelan.com
-    url: "https://changedetectionio.lab.escapethelan.com"
-    <<: *service-defaults
-        
-  - name: rxresume.lab.escapethelan.com
-    url: "https://rxresume.lab.escapethelan.com"
     <<: *service-defaults
         
   - name: redlib.lab.escapethelan.com
@@ -298,10 +286,6 @@ endpoints:
     url: "icmp://lxc-gotify.tail0e99d.ts.net"
     <<: *lxc-defaults
 
-  - name: lxc-uptimekuma
-    url: "icmp://lxc-uptimekuma.tail0e99d.ts.net"
-    <<: *lxc-defaults
-
   - name: lxc-speedtest
     url: "icmp://lxc-speedtest.tail0e99d.ts.net"
     <<: *lxc-defaults
@@ -310,16 +294,8 @@ endpoints:
     url: "icmp://lxc-stirlingpdf.tail0e99d.ts.net"
     <<: *lxc-defaults
 
-  - name: lxc-changedetectionio
-    url: "icmp://lxc-changedetectionio.tail0e99d.ts.net"
-    <<: *lxc-defaults
-
   - name: lxc-redlib
     url: "icmp://lxc-redlib.tail0e99d.ts.net"
-    <<: *lxc-defaults
-
-  - name: lxc-rxresume
-    url: "icmp://lxc-rxresume.tail0e99d.ts.net"
     <<: *lxc-defaults
 
   - name: lxc-sevenseas

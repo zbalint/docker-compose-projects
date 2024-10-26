@@ -23,6 +23,6 @@ services:
             - /opt/docker/volumes/speedtest/appdata/web:/etc/ssl/web
         healthcheck:
             test: ["CMD-SHELL", "curl -f http://127.0.0.1:80"]
-            interval: 1s
+            interval: 10s
             timeout: 5s
             retries: 60

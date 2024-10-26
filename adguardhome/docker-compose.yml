@@ -34,6 +34,6 @@ services:
       - no-new-privileges
     healthcheck:
       test: ["CMD-SHELL", "wget --spider 127.0.0.1:80"]
-      interval: 1s
+      interval: 10s
       timeout: 5s
       retries: 60

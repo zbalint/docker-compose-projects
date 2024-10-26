@@ -34,7 +34,7 @@ services:
       - TZ=Europe/Budapest
     healthcheck:
       test: ["CMD-SHELL", "ss -nputwl | grep LISTEN | grep 51515"]
-      interval: 1s
+      interval: 10s
       timeout: 5s
       retries: 60
     depends_on:
@@ -65,7 +65,7 @@ services:
       - no-new-privileges
     healthcheck:
       test: ["CMD-SHELL", "tailscale status"]
-      interval: 1s
+      interval: 10s
       timeout: 5s
       retries: 60
     

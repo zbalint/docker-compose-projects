@@ -18,6 +18,6 @@ services:
       - no-new-privileges
     healthcheck:
       test: ["CMD-SHELL", "ss -nputwl | grep LISTEN | grep 8080"]
-      interval: 1s
+      interval: 10s
       timeout: 5s
       retries: 60
