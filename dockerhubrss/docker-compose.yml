@@ -1,0 +1,30 @@
+services:
+  docker-hub-rss:
+    container_name: docker-hub-rss
+    image: theconnman/docker-hub-rss:0.6.1
+    read_only: true
+    hostname: docker-hub-rss
+    restart: on-failure:5
+    mem_limit: 512m
+    memswap_limit: 512m
+    mem_reservation: 256m
+    cpus: 1
+    user: 4000:4000
+    dns:
+      - 100.100.100.100
+    network_mode: "bridge"
+    cap_drop:
+      - all
+    security_opt:
+      - no-new-privileges:true
+    ports:
+      - ${BIND_ADDRESS:-127.0.0.1}:8080:3000/tcp
+    tmpfs:
+      - /.cache
+      - /.yarn
+      - /tmp
+    healthcheck:
+      test: ["CMD-SHELL", "wget --spider 127.0.0.1:3000"]
+      interval: 10s
+      timeout: 5s
+      retries: 60

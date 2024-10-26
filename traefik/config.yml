@@ -38,6 +38,15 @@ http:
         - https-redirectscheme
       tls: {}
       service: lxc-fusion
+    lxc-docker-hub-rss:
+      entryPoints:
+        - "https"
+      rule: "Host(`dockerhubrss.lab.escapethelan.com`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: lxc-docker-hub-rss
     lxc-searxng:
       entryPoints:
         - "https"
@@ -331,6 +340,12 @@ http:
         servers:
           - url: "http://lxc-fusion:8080"
         passHostHeader: true
+
+    lxc-docker-hub-rss:
+      loadBalancer:
+        servers:
+          - url: "http://lxc-docker-hub-rss:8080"
+        passHostHeader: true    
 
     lxc-linkwarden:
       loadBalancer:

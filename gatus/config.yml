@@ -184,6 +184,10 @@ endpoints:
     url: "https://fusion.lab.escapethelan.com"
     <<: *service-defaults
 
+  - name: dockerhubrss.lab.escapethelan.com
+    url: "https://dockerhubrss.lab.escapethelan.com"
+    <<: *service-defaults
+
 
   - name: srv01-prd-huhbh-lan
     url: "icmp://srv01-prd-huhbh-lan.tail0e99d.ts.net"
@@ -304,4 +308,8 @@ endpoints:
 
   - name: lxc-fusion
     url: "icmp://lxc-fusion.tail0e99d.ts.net"
+    <<: *lxc-defaults
+
+  - name: lxc-docker-hub-rss
+    url: "icmp://lxc-docker-hub-rss.tail0e99d.ts.net"
     <<: *lxc-defaults
