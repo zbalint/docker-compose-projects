@@ -9,23 +9,22 @@ services:
     cpus: 4
     dns:
       - 100.100.100.100
-      - 1.1.1.1
     ports:
-      - 127.0.0.1:9091:9091
+      - 9091:9091
     environment:
       - PUID=4000
       - GUID=4000
       - TZ=Europe/Budapest
-      - TAILSCALE_AUTHKEY=${TS_AUTHKEY}
-      - TAILSCALE_USE_SSH=0
-      - TAILSCALE_STATE_DIR=/var/lib/tailscale
-      - TAILSCALE_SERVE_PORT=9091
-      - TAILSCALE_SERVE_MODE=https
-      - TAILSCALE_HOSTNAME=ct-transmission
-      - DOCKER_MODS=ghcr.io/tailscale-dev/docker-mod:main
+      # - TAILSCALE_AUTHKEY=${TS_AUTHKEY}
+      # - TAILSCALE_USE_SSH=0
+      # - TAILSCALE_STATE_DIR=/var/lib/tailscale
+      # - TAILSCALE_SERVE_PORT=9091
+      # - TAILSCALE_SERVE_MODE=http
+      # - TAILSCALE_HOSTNAME=ct-transmission
+      # - DOCKER_MODS=ghcr.io/tailscale-dev/docker-mod:main
     volumes:
       - /opt/docker/volumes/sevenseas/transmission/conf:/config
-      - /opt/docker/volumes/sevenseas/transmission/state:/var/lib/tailscale
+      # - /opt/docker/volumes/sevenseas/transmission/state:/var/lib/tailscale
       - /mnt/hdd/media/torrent/complete:/downloads/complete
       - /mnt/hdd/media/torrent/inprogress:/downloads/incomplete
     cap_add:
@@ -45,23 +44,22 @@ services:
     cpus: 4
     dns:
       - 100.100.100.100
-      - 1.1.1.1
     ports:
-      - 127.0.0.1:9696:9696
+      - 9696:9696
     environment:
       - PUID=4000
       - GUID=4000
       - TZ=Europe/Budapest
-      - TAILSCALE_AUTHKEY=${TS_AUTHKEY}
-      - TAILSCALE_USE_SSH=0
-      - TAILSCALE_STATE_DIR=/var/lib/tailscale
-      - TAILSCALE_SERVE_PORT=9696
-      - TAILSCALE_SERVE_MODE=https
-      - TAILSCALE_HOSTNAME=ct-prowlarr
-      - DOCKER_MODS=ghcr.io/tailscale-dev/docker-mod:main
+      # - TAILSCALE_AUTHKEY=${TS_AUTHKEY}
+      # - TAILSCALE_USE_SSH=0
+      # - TAILSCALE_STATE_DIR=/var/lib/tailscale
+      # - TAILSCALE_SERVE_PORT=9696
+      # - TAILSCALE_SERVE_MODE=http
+      # - TAILSCALE_HOSTNAME=ct-prowlarr
+      # - DOCKER_MODS=ghcr.io/tailscale-dev/docker-mod:main
     volumes:
       - /opt/docker/volumes/sevenseas/prowlarr/conf:/config
-      - /opt/docker/volumes/sevenseas/prowlarr/state:/var/lib/tailscale
+      # - /opt/docker/volumes/sevenseas/prowlarr/state:/var/lib/tailscale
     cap_add:
       - net_admin
       - sys_module
@@ -79,23 +77,22 @@ services:
     cpus: 4
     dns:
       - 100.100.100.100
-      - 1.1.1.1
     ports:
-      - 127.0.0.1:7878:7878
+      - 7878:7878
     environment:
       - PUID=4000
       - GUID=4000
       - TZ=Europe/Budapest
-      - TAILSCALE_AUTHKEY=${TS_AUTHKEY}
-      - TAILSCALE_USE_SSH=0
-      - TAILSCALE_STATE_DIR=/var/lib/tailscale
-      - TAILSCALE_SERVE_PORT=7878
-      - TAILSCALE_SERVE_MODE=https
-      - TAILSCALE_HOSTNAME=ct-radarr
-      - DOCKER_MODS=ghcr.io/tailscale-dev/docker-mod:main
+      # - TAILSCALE_AUTHKEY=${TS_AUTHKEY}
+      # - TAILSCALE_USE_SSH=0
+      # - TAILSCALE_STATE_DIR=/var/lib/tailscale
+      # - TAILSCALE_SERVE_PORT=7878
+      # - TAILSCALE_SERVE_MODE=http
+      # - TAILSCALE_HOSTNAME=ct-radarr
+      # - DOCKER_MODS=ghcr.io/tailscale-dev/docker-mod:main
     volumes:
       - /opt/docker/volumes/sevenseas/radarr/conf:/config
-      - /opt/docker/volumes/sevenseas/radarr/state:/var/lib/tailscale
+      # - /opt/docker/volumes/sevenseas/radarr/state:/var/lib/tailscale
       - /mnt/hdd/media/library/films:/movies
       - /mnt/hdd/media/torrent/complete/:/downloads/complete
     cap_add:
@@ -115,23 +112,22 @@ services:
     cpus: 4
     dns:
       - 100.100.100.100
-      - 1.1.1.1
     ports:
-      - 127.0.0.1:8989:8989
+      - 8989:8989
     environment:
       - PUID=4000
       - GUID=4000
       - TZ=Europe/Budapest
-      - TAILSCALE_AUTHKEY=${TS_AUTHKEY}
-      - TAILSCALE_USE_SSH=0
-      - TAILSCALE_STATE_DIR=/var/lib/tailscale
-      - TAILSCALE_SERVE_PORT=8989
-      - TAILSCALE_SERVE_MODE=https
-      - TAILSCALE_HOSTNAME=ct-sonarr
-      - DOCKER_MODS=ghcr.io/tailscale-dev/docker-mod:main
+      # - TAILSCALE_AUTHKEY=${TS_AUTHKEY}
+      # - TAILSCALE_USE_SSH=0
+      # - TAILSCALE_STATE_DIR=/var/lib/tailscale
+      # - TAILSCALE_SERVE_PORT=8989
+      # - TAILSCALE_SERVE_MODE=http
+      # - TAILSCALE_HOSTNAME=ct-sonarr
+      # - DOCKER_MODS=ghcr.io/tailscale-dev/docker-mod:main
     volumes:
       - /opt/docker/volumes/sevenseas/sonarr/conf:/config
-      - /opt/docker/volumes/sevenseas/sonarr/state:/var/lib/tailscale
+      # - /opt/docker/volumes/sevenseas/sonarr/state:/var/lib/tailscale
       - /mnt/hdd/media/library/shows:/data
       - /mnt/hdd/media/torrent/complete/:/downloads/complete
     cap_add:
@@ -149,32 +145,24 @@ services:
     memswap_limit: 1024m
     mem_reservation: 512m
     cpus: 4
-    devices:
-      - /dev/dri/renderD128:/dev/dri/renderD128
-      - /dev/dri/renderD129:/dev/dri/renderD129
-      - /dev/dri/card0:/dev/dri/card0
-      - /dev/dri/card1:/dev/dri/card1
-    group_add:
-      - "105"
-      - "44"
     ports:
       - 8196:8096
     environment:
       - PUID=4000
       - GUID=4000
       - TZ=Europe/Budapest
-      - TAILSCALE_AUTHKEY=${TS_AUTHKEY}
-      - TAILSCALE_USE_SSH=0
-      - TAILSCALE_STATE_DIR=/var/lib/tailscale
-      - TAILSCALE_SERVE_PORT=8096
-      - TAILSCALE_SERVE_MODE=https
-      - TAILSCALE_HOSTNAME=ct-jellyfin
-      - DOCKER_MODS=ghcr.io/tailscale-dev/docker-mod:main|linuxserver/mods:jellyfin-amd
+      # - TAILSCALE_AUTHKEY=${TS_AUTHKEY}
+      # - TAILSCALE_USE_SSH=0
+      # - TAILSCALE_STATE_DIR=/var/lib/tailscale
+      # - TAILSCALE_SERVE_PORT=8096
+      # - TAILSCALE_SERVE_MODE=http
+      # - TAILSCALE_HOSTNAME=ct-jellyfin
+      # - DOCKER_MODS=ghcr.io/tailscale-dev/docker-mod:main|linuxserver/mods:jellyfin-amd
     volumes:
       - /mnt/hdd/media/library/shows:/data/tvshows
       - /mnt/hdd/media/library/films:/data/movies
       - /opt/docker/volumes/sevenseas/jellyfin/conf:/config
-      - /opt/docker/volumes/sevenseas/jellyfin/appdata/tailscale_var_lib:/var/lib
+      # - /opt/docker/volumes/sevenseas/jellyfin/state:/var/lib/tailscale
 
   emby:
     image: linuxserver/emby:latest
@@ -190,15 +178,15 @@ services:
       - PUID=4000
       - GUID=4000
       - TZ=Europe/Budapest
-      - TAILSCALE_AUTHKEY=${TS_AUTHKEY}
-      - TAILSCALE_USE_SSH=0
-      - TAILSCALE_STATE_DIR=/var/lib/tailscale
-      - TAILSCALE_SERVE_PORT=8096
-      - TAILSCALE_SERVE_MODE=https
-      - TAILSCALE_HOSTNAME=ct-emby
-      - DOCKER_MODS=ghcr.io/tailscale-dev/docker-mod:main
+      # - TAILSCALE_AUTHKEY=${TS_AUTHKEY}
+      # - TAILSCALE_USE_SSH=0
+      # - TAILSCALE_STATE_DIR=/var/lib/tailscale
+      # - TAILSCALE_SERVE_PORT=8096
+      # - TAILSCALE_SERVE_MODE=http
+      # - TAILSCALE_HOSTNAME=ct-emby
+      # - DOCKER_MODS=ghcr.io/tailscale-dev/docker-mod:main
     volumes:
       - /mnt/hdd/media/library/shows:/data/tvshows
       - /mnt/hdd/media/library/films:/data/movies
       - /opt/docker/volumes/sevenseas/emby/conf:/config
-      - /opt/docker/volumes/sevenseas/emby/appdata/tailscale_var_lib:/var/lib
+      # - /opt/docker/volumes/sevenseas/emby/state:/var/lib/tailscale

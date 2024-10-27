@@ -254,6 +254,51 @@ http:
         - https-redirectscheme
       tls: {}
       service: emby
+    emby:
+      entryPoints:
+        - "https"
+      rule: "Host(`emby.lab.escapethelan.com`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: emby
+    transmission:
+      entryPoints:
+        - "https"
+      rule: "Host(`transmission.lab.escapethelan.com`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: transmission
+    prowlarr:
+      entryPoints:
+        - "https"
+      rule: "Host(`prowlarr.lab.escapethelan.com`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: prowlarr
+    radarr:
+      entryPoints:
+        - "https"
+      rule: "Host(`radarr.lab.escapethelan.com`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: radarr
+    sonarr:
+      entryPoints:
+        - "https"
+      rule: "Host(`sonarr.lab.escapethelan.com`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: sonarr
     beszel:
       entryPoints:
         - "https"
@@ -477,6 +522,30 @@ http:
       loadBalancer:
         servers:
           - url: "http://lxc-sevenseas:8096"
+        passHostHeader: true
+    
+    transmission:
+      loadBalancer:
+        servers:
+          - url: "http://lxc-sevenseas:9091"
+        passHostHeader: true
+    
+    prowlarr:
+      loadBalancer:
+        servers:
+          - url: "http://lxc-sevenseas:9696"
+        passHostHeader: true
+    
+    radarr:
+      loadBalancer:
+        servers:
+          - url: "http://lxc-sevenseas:7878"
+        passHostHeader: true
+    
+    sonarr:
+      loadBalancer:
+        servers:
+          - url: "http://lxc-sevenseas:8989"
         passHostHeader: true
 
     beszel:
