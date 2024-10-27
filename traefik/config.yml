@@ -299,16 +299,6 @@ http:
         - https-redirectscheme
       tls: {}
       service: lxc-kasm
-      service: emby
-    emby:
-      entryPoints:
-        - "https"
-      rule: "Host(`emby.lab.escapethelan.com`)"
-      middlewares:
-        - default-headers
-        - https-redirectscheme
-      tls: {}
-      service: emby
     transmission:
       entryPoints:
         - "https"
