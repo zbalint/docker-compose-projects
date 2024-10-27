@@ -171,7 +171,23 @@ endpoints:
   - name: aghdns03.lab.escapethelan.com
     url: "https://aghdns03.lab.escapethelan.com"
     <<: *service-defaults
-        
+
+  - name: transmission.lab.escapethelan.com
+    url: "https://transmission.lab.escapethelan.com"
+    <<: *service-defaults
+
+  - name: prowlarr.lab.escapethelan.com
+    url: "https://prowlarr.lab.escapethelan.com"
+    <<: *service-defaults
+
+  - name: radarr.lab.escapethelan.com
+    url: "https://radarr.lab.escapethelan.com"
+    <<: *service-defaults
+
+  - name: sonarr.lab.escapethelan.com
+    url: "https://sonarr.lab.escapethelan.com"
+    <<: *service-defaults
+
   - name: jellyfin.lab.escapethelan.com
     url: "https://jellyfin.lab.escapethelan.com"
     <<: *service-defaults

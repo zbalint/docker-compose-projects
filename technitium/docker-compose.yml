@@ -5,7 +5,7 @@ services:
     hostname: ${CT_HOSTNAME}
     restart: unless-stopped
     # For DHCP deployments, use "host" network mode and remove all the port mappings, including the ports array by commenting them
-    # network_mode: "host"
+    # network_mode: "bridge"
     ports:
       - "5380:5380/tcp" #DNS web console (HTTP)
       - "53443:53443/tcp" #DNS web console (HTTPS)

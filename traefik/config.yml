@@ -236,6 +236,42 @@ http:
         - https-redirectscheme
       tls: {}
       service: adguardhome-03
+    ct-transmission:
+      entryPoints:
+        - "https"
+      rule: "Host(`transmission.lab.escapethelan.com`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: ct-transmission
+    ct-prowlarr:
+      entryPoints:
+        - "https"
+      rule: "Host(`prowlarr.lab.escapethelan.com`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: ct-prowlarr
+    ct-radarr:
+      entryPoints:
+        - "https"
+      rule: "Host(`radarr.lab.escapethelan.com`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: ct-radarr
+    ct-sonarr:
+      entryPoints:
+        - "https"
+      rule: "Host(`sonarr.lab.escapethelan.com`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: ct-sonarr
     jellyfin:
       entryPoints:
         - "https"
@@ -253,6 +289,16 @@ http:
         - default-headers
         - https-redirectscheme
       tls: {}
+      service: emby
+    lxc-kasm:
+      entryPoints:
+        - "https"
+      rule: "Host(`kasm.lab.escapethelan.com`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: lxc-kasm
       service: emby
     emby:
       entryPoints:
@@ -462,6 +508,7 @@ http:
       loadBalancer:
         servers:
           - url: "http://lxc-redlib:8080"
+          - url: "http://lxc-redlib:8080"
         passHostHeader: true
 
     lxc-netbootxyz:
@@ -512,6 +559,30 @@ http:
           - url: "http://lxc-agh-dns-03:8080"
         passHostHeader: true
     
+    ct-transmission:
+      loadBalancer:
+        servers:
+          - url: "http://lxc-sevenseas:9091"
+        passHostHeader: true
+    
+    ct-prowlarr:
+      loadBalancer:
+        servers:
+          - url: "http://lxc-sevenseas:9696"
+        passHostHeader: true
+    
+    ct-radarr:
+      loadBalancer:
+        servers:
+          - url: "http://lxc-sevenseas:7878"
+        passHostHeader: true
+    
+    ct-sonarr:
+      loadBalancer:
+        servers:
+          - url: "http://lxc-sevenseas:8989"
+        passHostHeader: true
+    
     jellyfin:
       loadBalancer:
         servers:
@@ -522,6 +593,12 @@ http:
       loadBalancer:
         servers:
           - url: "http://lxc-sevenseas:8096"
+        passHostHeader: true
+
+    lxc-kasm:
+      loadBalancer:
+        servers:
+          - url: "https://lxc-kasm:443"
         passHostHeader: true
     
     transmission:
