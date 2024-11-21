@@ -1,0 +1,28 @@
+services:
+  # SeaweedFS Volume Node
+  volume:
+    image: chrislusf/seaweedfs
+    container_name: seaweed-volume
+    read_only: true
+    restart: unless-stopped
+    mem_limit: 1g
+    memswap_limit: 1g
+    mem_reservation: 512m
+    cpus: 1
+    network_mode: bridge
+    dns:
+      - 100.100.100.100
+    user: 4000:4000
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - all
+    ports:
+      - ${BIND_ADDRESS:-127.0.0.1}:8080:8080
+      - ${BIND_ADDRESS:-127.0.0.1}:18080:18080
+    environment:
+      - MASTER=false
+    volumes:
+      - /seaweedfs-storage:/data
+      - /opt/docker/volumes/seaweedfs-volume:/metadata
+    command: volume -dataCenter=${DATACENTER} -rack=${RACK} -max=0 -dir=/data -dir.idx=/metadata -mserver="${MASTER_NODE_01}:9333,${MASTER_NODE_02}:9333,${MASTER_NODE_03}:9333" -ip=${BIND_ADDRESS} -ip.bind=0.0.0.0 -port=8080

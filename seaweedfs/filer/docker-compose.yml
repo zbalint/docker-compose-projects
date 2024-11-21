@@ -1,0 +1,25 @@
+services:
+   # SeaweedFS Filer Node
+  filer:
+    image: chrislusf/seaweedfs
+    container_name: seaweed-filer
+    read_only: true
+    restart: unless-stopped
+    mem_limit: 1g
+    memswap_limit: 1g
+    mem_reservation: 512m
+    cpus: 1
+    network_mode: bridge
+    dns:
+      - 100.100.100.100
+    user: 4000:4000
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - all
+    ports:
+      - ${BIND_ADDRESS:-127.0.0.1}:8888:8888
+      - ${BIND_ADDRESS:-127.0.0.1}:18888:18888
+    volumes:
+      - /opt/docker/volumes/seaweedfs-filer:/data
+    command: filer -iam -master="${MASTER_NODE_01}:9333,${MASTER_NODE_02}:9333,${MASTER_NODE_03}:9333" -port=8888 -ip=${BIND_ADDRESS} -ip.bind=0.0.0.0

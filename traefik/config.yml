@@ -384,7 +384,7 @@ http:
           interval: 10s
           timeout: 3s
         servers:
-        - url: "http://lxc-searxng-01"
+        - url: "http://lxc-searxng-01:8080"
 
     lxc-searxng-02:
       loadBalancer:
@@ -393,7 +393,7 @@ http:
           interval: 10s
           timeout: 3s
         servers:
-        - url: "http://lxc-searxng-02"
+        - url: "http://lxc-searxng-02:80"
 
     lxc-searxng-03:
       loadBalancer:
@@ -402,7 +402,7 @@ http:
           interval: 10s
           timeout: 3s
         servers:
-        - url: "http://lxc-searxng-03"
+        - url: "http://lxc-searxng-03:8080"
 
     lxc-backup:
       loadBalancer:
@@ -497,7 +497,6 @@ http:
     lxc-redlib:
       loadBalancer:
         servers:
-          - url: "http://lxc-redlib:8080"
           - url: "http://lxc-redlib:8080"
         passHostHeader: true
 

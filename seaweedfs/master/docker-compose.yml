@@ -1,0 +1,27 @@
+services:
+  # SeaweedFS Master Node
+  master:
+    container_name: seaweed-master
+    image: chrislusf/seaweedfs
+    read_only: true
+    restart: unless-stopped
+    mem_limit: 1g
+    memswap_limit: 1g
+    mem_reservation: 512m
+    cpus: 1
+    network_mode: bridge
+    dns:
+      - 100.100.100.100
+    user: 4000:4000
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - all
+    ports:
+      - ${BIND_ADDRESS:-127.0.0.1}:9333:9333
+      - ${BIND_ADDRESS:-127.0.0.1}:19333:19333
+    environment:
+      - MASTER=true
+    volumes:
+      - /opt/docker/volumes/seaweedfs-master:/data
+    command: master -defaultReplication=020 -mdir=/data -ip=${BIND_ADDRESS} -ip.bind=0.0.0.0 -peers=${MASTER_NODE_01}:9333,${MASTER_NODE_02}:9333,${MASTER_NODE_03}:9333 -volumeSizeLimitMB=4096 -metricsPort=9324

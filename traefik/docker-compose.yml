@@ -9,16 +9,19 @@ services:
     cpus: 2
     network_mode: host
     dns:
+      # - 1.1.1.1
       - 100.100.100.100
     dns_search:
       - tail0e99d.ts.net
     security_opt:
       - no-new-privileges:true
     environment:
-      - CF_DNS_API_TOKEN=${CF_API_KEY}
+      - CLOUDFLARE_POLLING_INTERVAL=10
+      - CLOUDFLARE_PROPAGATION_TIMEOUT=100
+      - CF_DNS_API_TOKEN=${CF_DNS_API_TOKEN}
       # If you choose to use an API Key instead of a Token, specify your email as well
-      # - CF_API_EMAIL=${CF_API_EMAIL}
-      # - CF_API_KEY=${CF_API_KEY}
+      #- CF_API_EMAIL=${CF_API_EMAIL}        
+      #- CF_API_KEY=${CF_API_KEY}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
