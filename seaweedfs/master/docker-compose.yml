@@ -23,5 +23,6 @@ services:
     environment:
       - MASTER=true
     volumes:
+      - /opt/docker/stacks/seaweedfs-master/master.toml:/etc/seaweedfs/master.toml:ro
       - /opt/docker/volumes/seaweedfs-master:/data
-    command: master -defaultReplication=010 -mdir=/data -ip=${BIND_ADDRESS} -ip.bind=0.0.0.0 -peers=${MASTER_NODE_01}:9333,${MASTER_NODE_02}:9333,${MASTER_NODE_03}:9333 -volumeSizeLimitMB=4096 -metricsPort=9324
+    command: master -defaultReplication=010 -mdir=/data -ip=${BIND_ADDRESS} -ip.bind=0.0.0.0 -peers=${MASTER_NODE_01}:9333,${MASTER_NODE_02}:9333,${MASTER_NODE_03}:9333 -volumeSizeLimitMB=1024 -volumePreallocate -metricsPort=9324

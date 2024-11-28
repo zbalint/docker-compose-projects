@@ -14,7 +14,7 @@ services:
       - 100.100.100.100
     user: 4000:4000
     security_opt:
-      - no-new-privileges:true
+      - no-new-privileges:truetmpfs
     cap_drop:
       - all
     ports:
@@ -25,4 +25,4 @@ services:
     volumes:
       - /seaweedfs-storage:/data
       - /opt/docker/volumes/seaweedfs-volume:/metadata
-    command: volume -dataCenter=${DATACENTER} -rack=${RACK} -max=0 -dir=/data -dir.idx=/metadata -mserver="${MASTER_NODE_01}:9333,${MASTER_NODE_02}:9333,${MASTER_NODE_03}:9333" -ip=${BIND_ADDRESS} -ip.bind=0.0.0.0 -port=8080
+    command: volume -dataCenter=${DATACENTER} -rack=${RACK} -max=0 -dir=/data -dir.idx=/metadata -mserver="${MASTER_NODE_01}:9333,${MASTER_NODE_02}:9333,${MASTER_NODE_03}:9333" -ip=${BIND_ADDRESS} -ip.bind=0.0.0.0 -port=8080 -idleTimeout=60 -index=memory -readMode=proxy -metricsPort=9999 -hasSlowRead=true -readBufferSizeMB=64 -concurrentDownloadLimitMB=10000 –concurrentUploadLimitMB=10000
