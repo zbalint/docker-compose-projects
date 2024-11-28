@@ -8,7 +8,7 @@ services:
     mem_limit: 1g
     memswap_limit: 1g
     mem_reservation: 512m
-    cpus: 1
+    cpus: 2
     network_mode: bridge
     dns:
       - 100.100.100.100
@@ -24,4 +24,4 @@ services:
       - MASTER=true
     volumes:
       - /opt/docker/volumes/seaweedfs-master:/data
-    command: master -defaultReplication=020 -mdir=/data -ip=${BIND_ADDRESS} -ip.bind=0.0.0.0 -peers=${MASTER_NODE_01}:9333,${MASTER_NODE_02}:9333,${MASTER_NODE_03}:9333 -volumeSizeLimitMB=4096 -metricsPort=9324
+    command: master -defaultReplication=010 -mdir=/data -ip=${BIND_ADDRESS} -ip.bind=0.0.0.0 -peers=${MASTER_NODE_01}:9333,${MASTER_NODE_02}:9333,${MASTER_NODE_03}:9333 -volumeSizeLimitMB=4096 -metricsPort=9324
