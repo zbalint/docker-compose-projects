@@ -1,7 +1,7 @@
 [Unit]
 Description=SeaweedFS FUSE Mount Service
 After=network-online.target
-Before=docker.service seaweedfs-docker.service
+Before=docker.service
 [Service]
 Type=simple
 EnvironmentFile=/root/seaweedfs-mount.conf

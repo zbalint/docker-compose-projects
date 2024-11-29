@@ -5,8 +5,8 @@ readonly SEAWEEDFS_BIN_PATH="/usr/sbin/weed"
 readonly SCRIPT_BIN_PATH="/usr/sbin/wait_for_weed_mount"
 readonly CONF_FILE_PATH="/root/seaweedfs-mount.conf"
 
-readonly MOUNT_SERVICE_PATH="/etc/systemd/system/docker.service.wants/seaweedfs-mount.service"
-readonly DOCKER_SERVICE_PATH="/etc/systemd/system/docker.service.wants/seaweedfs-docker.service"
+readonly MOUNT_SERVICE_PATH="/etc/systemd/system/seaweedfs-mount.service"
+readonly DOCKER_SERVICE_PATH="/etc/systemd/system/seaweedfs-docker.service"
 
 readonly SCRIPT_URL="https://raw.githubusercontent.com/zbalint/docker-compose-projects/refs/heads/master/seaweedfs/systemd/wait_for_weed_mount.sh"
 readonly MOUNT_SERVICE_URL="https://raw.githubusercontent.com/zbalint/docker-compose-projects/refs/heads/master/seaweedfs/systemd/seaweedfs-mount.service"
@@ -61,18 +61,21 @@ function enable_docker() {
 function main() {
     echo "Download dependencies..."
     if ! download_dependencies; then
-        cleanup
+        cleanup 
+        exit 1
     fi
     echo "Enable services..."
     if ! enable_services; then
         disable_services
         cleanup
+        exit 1
     fi
     echo "Disable docker services..."
     if ! disable_docker; then
         disable_services
         cleanup
         enable_docker
+        exit 1
     fi
 }
 
