@@ -47,14 +47,31 @@ function enable_services() {
     systemctl enable seaweedfs-docker.service --now
 }
 
+function disable_docker() {
+    systemctl disable docker.service && \
+    systemctl disable docker.socket
+}
+
+function enable_docker() {
+    systemctl enable docker.socket --now && \
+    systemctl enable docker.service --now 
+}
+
 
 function main() {
+    echo "Download dependencies..."
     if ! download_dependencies; then
         cleanup
     fi
+    echo "Enable services..."
     if ! enable_services; then
         disable_services
         cleanup
     fi
-
+    echo "Disable docker services..."
+    if ! disable_docker; then
+        disable_services
+        cleanup
+        enable_docker
+    fi
 }
