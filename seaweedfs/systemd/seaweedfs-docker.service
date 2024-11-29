@@ -3,7 +3,7 @@ Description=Restart docker after weed mount
 After=seaweedfs-mount.service
 
 [Service]
-ExecStart=/root/wait_for_mount.sh
+ExecStart=/usr/sbin/wait_for_weed_mount
 
 [Install]
 WantedBy=docker.service
