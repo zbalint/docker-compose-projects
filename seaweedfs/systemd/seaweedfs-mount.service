@@ -9,4 +9,4 @@ ExecStart=/usr/sbin/weed mount -filer=100.64.100.21:8888,100.64.100.22:8888,100.
 Restart=on-failure
 RestartSec=5s
 [Install]
-WantedBy=docker.service seaweedfs-docker.service
+WantedBy=docker.service

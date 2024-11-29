@@ -11,7 +11,7 @@ readonly DOCKER_SERVICE_PATH="/etc/systemd/system/docker.service.wants/seaweedfs
 readonly SCRIPT_URL="https://raw.githubusercontent.com/zbalint/docker-compose-projects/refs/heads/master/seaweedfs/systemd/wait_for_weed_mount.sh"
 readonly MOUNT_SERVICE_URL="https://raw.githubusercontent.com/zbalint/docker-compose-projects/refs/heads/master/seaweedfs/systemd/seaweedfs-mount.service"
 readonly DOCKER_SERVICE_URL="https://raw.githubusercontent.com/zbalint/docker-compose-projects/refs/heads/master/seaweedfs/systemd/seaweedfs-docker.service"
-readonly CONF_FILE_URL"https://raw.githubusercontent.com/zbalint/docker-compose-projects/refs/heads/master/seaweedfs/systemd/seaweedfs-mount.conf"
+readonly CONF_FILE_URL="https://raw.githubusercontent.com/zbalint/docker-compose-projects/refs/heads/master/seaweedfs/systemd/seaweedfs-mount.conf"
 
 function cleanup() {
     rm -f "weed.tar.gz"
