@@ -53,4 +53,4 @@ threshold = 0.9           # create threshold
 # have 3 different racks, that's still considered writable. Writes will still
 # try to replicate to all available volumes. You should only use this option
 # if you are doing your own replication or periodic sync of volumes.
-treat_replication_as_minimums = false
+treat_replication_as_minimums = true

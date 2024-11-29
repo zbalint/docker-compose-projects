@@ -1,0 +1,11 @@
+[Unit]
+Description=SeaweedFS FUSE Mount Service
+After=network-online.target
+Before=docker.service seaweedfs-docker.service
+[Service]
+Type=simple
+ExecStart=/usr/sbin/weed mount -filer=100.64.100.21:8888,100.64.100.22:8888,100.64.100.23:8888 -filer.path=/docker/volumes/linkwarden -dir=/opt/docker/volumes/linkwarden -cacheCapacityMB=1000 -cacheDir=/tmp -chunkSizeLimitMB=4 -volumeServerAccess=direct -dirAutoCreate
+Restart=on-failure
+RestartSec=5s
+[Install]
+WantedBy=docker.service seaweedfs-docker.service
