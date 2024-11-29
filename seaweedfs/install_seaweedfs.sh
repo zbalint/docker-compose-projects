@@ -75,3 +75,5 @@ function main() {
         enable_docker
     fi
 }
+
+main
