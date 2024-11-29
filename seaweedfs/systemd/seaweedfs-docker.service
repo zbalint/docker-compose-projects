@@ -1,9 +1,9 @@
 [Unit]
 Description=Restart docker after weed mount
-After=seaweedfs-mount.service
+After=network-online.target seaweedfs-mount.service
 
 [Service]
 ExecStart=/usr/sbin/wait_for_weed_mount
 
 [Install]
-WantedBy=docker.service
+WantedBy=multi-user.target

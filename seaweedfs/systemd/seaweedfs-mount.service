@@ -1,7 +1,7 @@
 [Unit]
 Description=SeaweedFS FUSE Mount Service
-After=network-online.target
-Before=docker.service
+After=network-online.target tailscaled.service
+Before=seaweedfs-docker.service
 [Service]
 Type=simple
 EnvironmentFile=/root/seaweedfs-mount.conf
@@ -9,4 +9,4 @@ ExecStart=/usr/sbin/weed mount -filer=100.64.100.21:8888,100.64.100.22:8888,100.
 Restart=on-failure
 RestartSec=5s
 [Install]
-WantedBy=docker.service
+WantedBy=seaweedfs-docker.service
