@@ -27,7 +27,9 @@ function download_dependencies() {
     wget -O "${SCRIPT_BIN_PATH}" "${SCRIPT_URL}" && chmod +x "${SCRIPT_BIN_PATH}" || return 1
     wget -O "${MOUNT_SERVICE_PATH}" "${MOUNT_SERVICE_URL}" || return 1
     wget -O "${DOCKER_SERVICE_PATH}" "${DOCKER_SERVICE_URL}" || return 1
-    wget -O "${CONF_FILE_PATH}" "${CONF_FILE_URL}" || return 1
+    if ! test -f "${CONF_FILE_PATH}"; then
+        wget -O "${CONF_FILE_PATH}" "${CONF_FILE_URL}" || return 1
+    fi
     cd - || return 1
 
     return 0

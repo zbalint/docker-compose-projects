@@ -1,0 +1,17 @@
+[Unit]
+Description=SeaweedFS Volume
+After=network.target tailscaled.service
+
+[Service]
+Type=simple
+User=root
+Group=root
+EnvironmentFile=/root/seaweedfs/conf/seaweedfs-volume.conf
+ExecStart=/root/seaweedfs/bin/weed volume -dataCenter=${DATACENTER} -rack=${RACK} -max=0 -dir=/seaweedfs-storage -dir.idx=/root/seaweedfs/data -mserver="${MASTER_NODE_01}:9333,${MASTER_NODE_02}:9333,${MASTER_NODE_03}:9333" -ip=${BIND_ADDRESS} -ip.bind=${BIND_ADDRESS} -port=8080 -idleTimeout=60 -index=memory -readMode=proxy -metricsPort=9999 -hasSlowRead=true -readBufferSizeMB=64 -concurrentDownloadLimitMB=10000 –concurrentUploadLimitMB=10000
+WorkingDirectory=/root/seaweedfs/data
+SyslogIdentifier=seaweedfs-volume
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,17 @@
+[Unit]
+Description=SeaweedFS Master
+After=network.target tailscaled.service
+
+[Service]
+Type=simple
+User=root
+Group=root
+EnvironmentFile=/root/seaweedfs/conf/seaweedfs-master.conf
+ExecStart=/root/seaweedfs/bin/weed master -defaultReplication=010 -mdir=/root/seaweedfs/data -ip=${BIND_ADDRESS} -ip.bind=${BIND_ADDRESS} -peers=${MASTER_NODE_01}:9333,${MASTER_NODE_02}:9333,${MASTER_NODE_03}:9333 -volumeSizeLimitMB=1024 -volumePreallocate -metricsPort=9324
+WorkingDirectory=/root/seaweedfs/data
+SyslogIdentifier=seaweedfs-master
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target

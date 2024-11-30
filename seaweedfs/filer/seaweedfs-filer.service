@@ -1,0 +1,17 @@
+[Unit]
+Description=SeaweedFS Filer
+After=network.target tailscaled.service
+
+[Service]
+Type=simple
+User=root
+Group=root
+EnvironmentFile=/root/seaweedfs/conf/seaweedfs-filer.conf
+ExecStart=/root/seaweedfs/bin/weed filer -iam -master="${MASTER_NODE_01}:9333,${MASTER_NODE_02}:9333,${MASTER_NODE_03}:9333" -port=8888 -ip=${BIND_ADDRESS} -ip.bind=${BIND_ADDRESS}
+WorkingDirectory=/root/seaweedfs/data
+SyslogIdentifier=seaweedfs-filer
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target

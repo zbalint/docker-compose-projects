@@ -14,7 +14,7 @@ services:
       - 100.100.100.100
     user: 4000:4000
     security_opt:
-      - no-new-privileges:truetmpfs
+      - no-new-privileges:true
     cap_drop:
       - all
     ports:
