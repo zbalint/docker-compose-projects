@@ -1,0 +1,48 @@
+services:
+  openobserve:
+    # container_name: openobserve
+    image: public.ecr.aws/zinclabs/openobserve:latest
+    read_only: true
+    hostname: openobserve
+    # restart: unless-stopped
+    # mem_limit: 1024m
+    # memswap_limit: 1024m
+    # mem_reservation: 256m
+    # dns:
+    #   - 100.100.100.100
+    # network_mode: "host"
+    # cap_drop:
+      # - all
+    # security_opt:
+    #   - no-new-privileges:true
+    environment:
+      RUST_LOG: "error"
+      RUST_BACKTRACE: "full"
+      ZO_DATA_DIR: "/data"
+      ZO_ROOT_USER_EMAIL: "root@example.com"
+      ZO_ROOT_USER_PASSWORD: "abc"
+      # ZO_META_STORE: "postgres"
+      # ZO_META_POSTGRES_DSN: "postgres://x:y@o2-database:5432/openobserve"
+      ZO_MEMORY_CACHE_ENABLED: "true"
+      ZO_MEMORY_CACHE_MAX_SIZE: "256"
+      ZO_MEMORY_CACHE_DATAFUSION_MAX_SIZE: "256"
+      ZO_DISK_CACHE_ENABLED: "false"
+      ZO_DISK_CACHE_MAX_SIZE: "8192"
+      ZO_MAX_FILE_SIZE_ON_DISK: "16"
+      ZO_MAX_FILE_SIZE_IN_MEMORY: "128"
+      ZO_MEM_TABLE_MAX_SIZE: "128"
+      ZO_FILE_MOVE_THREAD_NUM: "1"
+      TZ: "Europe/Budapest"
+    volumes:
+      - /opt/docker/volumes/openobserve/data:/data
+    # ports:
+      # - "80:5080"
+    ports:
+      - target: 5080
+        published: 80
+        protocol: tcp
+        mode: host
+    deploy:
+      # mode: global
+      mode: replicated
+      replicas: 1

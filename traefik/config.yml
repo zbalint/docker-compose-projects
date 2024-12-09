@@ -362,6 +362,15 @@ http:
         - https-redirectscheme
       tls: {}
       service: foldingathome-02
+    lxc-openobserve:
+      entryPoints:
+        - "https"
+      rule: "Host(`openobserve.lab.escapethelan.com`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: lxc-openobserve
 
 #endregion
 #region services
@@ -631,6 +640,34 @@ http:
         servers:
           - url: "http://lxc-foldingathome-02:8080"
         passHostHeader: true
+    
+    lxc-openobserve:
+      weighted:
+        healthCheck: {}
+        services:
+        - name: lxc-openobserve-master
+          weight: 3
+        - name: lxc-openobserve-slave
+          weight: 1
+
+    lxc-openobserve-master:
+      loadBalancer:
+        healthCheck:
+          path: /web/login
+          interval: 10s
+          timeout: 3s
+        servers:
+        - url: "http://lxc-openobserve-master"
+
+    lxc-openobserve-slave:
+      loadBalancer:
+        healthCheck:
+          path: /web/login
+          interval: 10s
+          timeout: 3s
+        servers:
+        - url: "http://lxc-openobserve-slave"
+
     
 
 #endregion
