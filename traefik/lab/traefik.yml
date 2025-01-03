@@ -25,7 +25,7 @@ providers:
 certificatesResolvers:
   cloudflare:
     acme:
-      email: balint.zoltan.marton@gmail.com
+      email: exmaple@exaple.com
       storage: acme.json
       dnsChallenge:
         provider: cloudflare

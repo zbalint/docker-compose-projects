@@ -11,6 +11,18 @@ http:
       middlewares:
         - default-headers
         - https-redirectscheme
+
+    searxng:
+      entryPoints:
+        - "https"
+      rule: "Host(`searxng.lab.escapethelan.com`)"
+      middlewares:
+        - swarm-headers
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: searxng
+    
     lxc-backup:
       entryPoints:
         - "https"
@@ -47,15 +59,6 @@ http:
         - https-redirectscheme
       tls: {}
       service: lxc-docker-hub-rss
-    lxc-searxng:
-      entryPoints:
-        - "https"
-      rule: "Host(`searxng.lab.escapethelan.com`)"
-      middlewares:
-        - default-headers
-        - https-redirectscheme
-      tls: {}
-      service: lxc-searxng
     lxc-gotify:
       entryPoints:
         - "https"
@@ -362,56 +365,15 @@ http:
         - https-redirectscheme
       tls: {}
       service: foldingathome-02
-    lxc-openobserve:
-      entryPoints:
-        - "https"
-      rule: "Host(`openobserve.lab.escapethelan.com`)"
-      middlewares:
-        - default-headers
-        - https-redirectscheme
-      tls: {}
-      service: lxc-openobserve
 
 #endregion
 #region services
   services:
-    lxc-searxng:
-      weighted:
-        healthCheck: {}
-        services:
-        - name: lxc-searxng-01
-          weight: 2
-        - name: lxc-searxng-02
-          weight: 1
-        - name: lxc-searxng-03
-          weight: 3
-
-    lxc-searxng-01:
+    searxng:
       loadBalancer:
-        healthCheck:
-          path: /stats
-          interval: 10s
-          timeout: 3s
         servers:
-        - url: "http://lxc-searxng-01:8080"
-
-    lxc-searxng-02:
-      loadBalancer:
-        healthCheck:
-          path: /stats
-          interval: 10s
-          timeout: 3s
-        servers:
-        - url: "http://lxc-searxng-02:80"
-
-    lxc-searxng-03:
-      loadBalancer:
-        healthCheck:
-          path: /stats
-          interval: 10s
-          timeout: 3s
-        servers:
-        - url: "http://lxc-searxng-03:8080"
+          - url: "http://searxng.swarm.escapethelan.com"
+        passHostHeader: false
 
     lxc-backup:
       loadBalancer:
@@ -640,38 +602,14 @@ http:
         servers:
           - url: "http://lxc-foldingathome-02:8080"
         passHostHeader: true
-    
-    lxc-openobserve:
-      weighted:
-        healthCheck: {}
-        services:
-        - name: lxc-openobserve-master
-          weight: 3
-        - name: lxc-openobserve-slave
-          weight: 1
-
-    lxc-openobserve-master:
-      loadBalancer:
-        healthCheck:
-          path: /web/login
-          interval: 10s
-          timeout: 3s
-        servers:
-        - url: "http://lxc-openobserve-master"
-
-    lxc-openobserve-slave:
-      loadBalancer:
-        healthCheck:
-          path: /web/login
-          interval: 10s
-          timeout: 3s
-        servers:
-        - url: "http://lxc-openobserve-slave"
-
-    
 
 #endregion
   middlewares:
+    swarm-headers:
+      headers:
+        customRequestHeaders:
+          Host: "swarm.escapethelan.com"
+
     https-redirectscheme:
       redirectScheme:
         scheme: https

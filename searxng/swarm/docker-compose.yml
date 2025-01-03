@@ -1,0 +1,29 @@
+services:
+  searxng:
+    image: searxng/searxng:latest
+    env_file: /opt/docker/volumes/searxng/searxng.env
+    # environment:
+      # - TZ=Europe/Budapest
+    volumes:
+      - /opt/docker/volumes/searxng/appdata:/etc/searxng
+    deploy:
+      replicas: 1
+      labels:
+        # traefik
+        - "traefik.enable=true"
+        - "traefik.docker.network=traefik_public"
+
+        # traefikv2
+        # - "traefik.http.routers.searxng.rule=Host(`searxng.swarm.escapethelan.com`)"
+        # - "traefik.http.services.searxng.loadbalancer.server.port=8080"
+        
+        - "traefik.http.routers.searxng.rule=Host(`searxng.swarm.escapethelan.com`)"
+        - "traefik.http.routers.searxng.entrypoints=http"
+        - "traefik.http.services.searxng-service.loadbalancer.server.port=8080"
+
+    networks:
+      - traefik_public
+
+networks:
+  traefik_public:
+    external: true
