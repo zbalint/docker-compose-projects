@@ -22,6 +22,26 @@ http:
         - https-redirectscheme
       tls: {}
       service: searxng
+
+    goaccess-web:
+      entryPoints:
+        - "https"
+      rule: "Host(`stats.lab.escapethelan.com`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: goaccess-web
+
+    goaccess-wss:
+      entryPoints:
+        - "https"
+      rule: "Host(`stats.lab.escapethelan.com`) && Path(`/live`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: goaccess-wss
     
     lxc-backup:
       entryPoints:
@@ -374,6 +394,18 @@ http:
         servers:
           - url: "http://searxng.swarm.escapethelan.com"
         passHostHeader: false
+
+    goaccess-web:
+      loadBalancer:
+        servers:
+          - url: "http://traefik.lab.escapethelan.com:8080"
+        passHostHeader: true
+
+    goaccess-wss:
+      loadBalancer:
+        servers:
+          - url: "http://traefik.lab.escapethelan.com:7890"
+        passHostHeader: true
 
     lxc-backup:
       loadBalancer:

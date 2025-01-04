@@ -1,6 +1,8 @@
 api:
   dashboard: true
   debug: true
+accessLog:
+  filePath: "/logs/access.log"
 entryPoints:
   http:
     address: ":80"
