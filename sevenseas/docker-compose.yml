@@ -190,3 +190,28 @@ services:
       - /mnt/hdd/media/library/films:/data/movies
       - /opt/docker/volumes/sevenseas/emby/conf:/config
       # - /opt/docker/volumes/sevenseas/emby/state:/var/lib/tailscale
+  
+  plex:
+    image: lscr.io/linuxserver/plex:latest
+    container_name: plex
+    restart: unless-stopped
+    mem_limit: 2048m
+    memswap_limit: 2048m
+    mem_reservation: 512m
+    cpus: 4
+    ports:
+      - 32400:32400
+    environment:
+      - PUID=4000
+      - GUID=4000
+      # - PLEX_UID=4000
+      # - GROUP_UID=4000
+      # - UMASK_SET=022
+      - TZ=Europe/Budapest
+      - VERSION=docker
+      - PLEX_CLAIM=${PLEX_CLAIM_TOKEN} #optional
+    volumes:
+      # - /mnt/hdd/media/library:/data
+      - /mnt/hdd/media/library/shows:/data/tv
+      - /mnt/hdd/media/library/films:/data/movies
+      - /opt/docker/volumes/sevenseas/plex/conf:/config

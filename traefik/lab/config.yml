@@ -313,6 +313,15 @@ http:
         - https-redirectscheme
       tls: {}
       service: emby
+    plex:
+      entryPoints:
+        - "https"
+      rule: "Host(`plex.lab.escapethelan.com`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: plex
     lxc-kasm:
       entryPoints:
         - "https"
@@ -585,6 +594,12 @@ http:
       loadBalancer:
         servers:
           - url: "http://lxc-sevenseas:8096"
+        passHostHeader: true
+
+    plex:
+      loadBalancer:
+        servers:
+          - url: "http://lxc-sevenseas:32400"
         passHostHeader: true
 
     lxc-kasm:
