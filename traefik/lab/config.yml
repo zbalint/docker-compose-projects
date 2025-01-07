@@ -5,29 +5,40 @@ http:
     ping:
       entryPoints:
         - "https"
-      rule: "Host(`traefik.lab.escapethelan.com`)"
+      rule: "Host(`ping-traefik.lab.escapethelan.com`)"
       service: ping@internal
       tls: {}
       middlewares:
         - default-headers
         - https-redirectscheme
 
-    searxng:
+    dashboard:
       entryPoints:
         - "https"
-      rule: "Host(`searxng.lab.escapethelan.com`)"
+      rule: "Host(`dash-traefik.lab.escapethelan.com`)"
+      service: api@internal
+      tls: {}
       middlewares:
-        - swarm-headers
+        - authelia
         - default-headers
         - https-redirectscheme
-      tls: {}
-      service: searxng
+
+    authelia:
+      entryPoints:
+        - "https"
+      rule: 'Host(`authelia.lab.escapethelan.com`)'
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}      
+      service: authelia
 
     goaccess-web:
       entryPoints:
         - "https"
       rule: "Host(`stats.lab.escapethelan.com`)"
       middlewares:
+        - authelia
         - default-headers
         - https-redirectscheme
       tls: {}
@@ -42,12 +53,24 @@ http:
         - https-redirectscheme
       tls: {}
       service: goaccess-wss
+
+    searxng:
+      entryPoints:
+        - "https"
+      rule: "Host(`searxng.lab.escapethelan.com`)"
+      middlewares:
+        - swarm-headers
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: searxng
     
     lxc-backup:
       entryPoints:
         - "https"
       rule: "Host(`restia.lab.escapethelan.com`)"
       middlewares:
+        - authelia
         - default-headers
         - https-redirectscheme
       tls: {}
@@ -57,6 +80,7 @@ http:
         - "https"
       rule: "Host(`status.lab.escapethelan.com`)"
       middlewares:
+        - authelia
         - default-headers
         - https-redirectscheme
       tls: {}
@@ -106,15 +130,6 @@ http:
         - https-redirectscheme
       tls: {}
       service: lxc-paperlessngx
-    lxc-uptimekuma:
-      entryPoints:
-        - "https"
-      rule: "Host(`uptimekuma.lab.escapethelan.com`)"
-      middlewares:
-        - default-headers
-        - https-redirectscheme
-      tls: {}
-      service: lxc-uptimekuma
     lxc-linkwarden:
       entryPoints:
         - "https"
@@ -169,33 +184,6 @@ http:
         - https-redirectscheme
       tls: {}
       service: lxc-stirlingpdf
-    lxc-changedetectionio:
-      entryPoints:
-        - "https"
-      rule: "Host(`changedetectionio.lab.escapethelan.com`)"
-      middlewares:
-        - default-headers
-        - https-redirectscheme
-      tls: {}
-      service: lxc-changedetectionio
-    lxc-rxresume:
-      entryPoints:
-        - "https"
-      rule: "Host(`rxresume.lab.escapethelan.com`)"
-      middlewares:
-        - default-headers
-        - https-redirectscheme
-      tls: {}
-      service: lxc-rxresume
-    lxc-docmost:
-      entryPoints:
-        - "https"
-      rule: "Host(`docmost.lab.escapethelan.com`)"
-      middlewares:
-        - default-headers
-        - https-redirectscheme
-      tls: {}
-      service: lxc-docmost
     lxc-redlib:
       entryPoints:
         - "https"
@@ -210,6 +198,7 @@ http:
         - "https"
       rule: "Host(`tcdns01.lab.escapethelan.com`)"
       middlewares:
+        - authelia
         - default-headers
         - https-redirectscheme
       tls: {}
@@ -219,6 +208,7 @@ http:
         - "https"
       rule: "Host(`tcdns02.lab.escapethelan.com`)"
       middlewares:
+        - authelia
         - default-headers
         - https-redirectscheme
       tls: {}
@@ -228,6 +218,7 @@ http:
         - "https"
       rule: "Host(`tcdns03.lab.escapethelan.com`)"
       middlewares:
+        - authelia
         - default-headers
         - https-redirectscheme
       tls: {}
@@ -237,6 +228,7 @@ http:
         - "https"
       rule: "Host(`aghdns01.lab.escapethelan.com`)"
       middlewares:
+        - authelia
         - default-headers
         - https-redirectscheme
       tls: {}
@@ -246,6 +238,7 @@ http:
         - "https"
       rule: "Host(`aghdns02.lab.escapethelan.com`)"
       middlewares:
+        - authelia
         - default-headers
         - https-redirectscheme
       tls: {}
@@ -255,46 +248,11 @@ http:
         - "https"
       rule: "Host(`aghdns03.lab.escapethelan.com`)"
       middlewares:
+        - authelia
         - default-headers
         - https-redirectscheme
       tls: {}
       service: adguardhome-03
-    ct-transmission:
-      entryPoints:
-        - "https"
-      rule: "Host(`transmission.lab.escapethelan.com`)"
-      middlewares:
-        - default-headers
-        - https-redirectscheme
-      tls: {}
-      service: ct-transmission
-    ct-prowlarr:
-      entryPoints:
-        - "https"
-      rule: "Host(`prowlarr.lab.escapethelan.com`)"
-      middlewares:
-        - default-headers
-        - https-redirectscheme
-      tls: {}
-      service: ct-prowlarr
-    ct-radarr:
-      entryPoints:
-        - "https"
-      rule: "Host(`radarr.lab.escapethelan.com`)"
-      middlewares:
-        - default-headers
-        - https-redirectscheme
-      tls: {}
-      service: ct-radarr
-    ct-sonarr:
-      entryPoints:
-        - "https"
-      rule: "Host(`sonarr.lab.escapethelan.com`)"
-      middlewares:
-        - default-headers
-        - https-redirectscheme
-      tls: {}
-      service: ct-sonarr
     jellyfin:
       entryPoints:
         - "https"
@@ -322,15 +280,6 @@ http:
         - https-redirectscheme
       tls: {}
       service: plex
-    lxc-kasm:
-      entryPoints:
-        - "https"
-      rule: "Host(`kasm.lab.escapethelan.com`)"
-      middlewares:
-        - default-headers
-        - https-redirectscheme
-      tls: {}
-      service: lxc-kasm
     transmission:
       entryPoints:
         - "https"
@@ -398,6 +347,12 @@ http:
 #endregion
 #region services
   services:
+    authelia:
+      loadBalancer:
+        servers:
+          - url: 'http://traefik.lab.escapethelan.com:9091'
+        passHostHeader: true
+
     searxng:
       loadBalancer:
         servers:
@@ -464,12 +419,6 @@ http:
           - url: "http://lxc-paperless-ngx"
         passHostHeader: true
 
-    lxc-uptimekuma:
-      loadBalancer:
-        servers:
-          - url: "http://lxc-uptimekuma"
-        passHostHeader: true
-
     lxc-web-check:
       loadBalancer:
         servers:
@@ -486,24 +435,6 @@ http:
       loadBalancer:
         servers:
           - url: "http://lxc-stirlingpdf:8080"
-        passHostHeader: true
-
-    lxc-changedetectionio:
-      loadBalancer:
-        servers:
-          - url: "http://lxc-changedetectionio"
-        passHostHeader: true
-
-    lxc-rxresume:
-      loadBalancer:
-        servers:
-          - url: "http://lxc-rxresume"
-        passHostHeader: true
-    
-    lxc-docmost:
-      loadBalancer:
-        servers:
-          - url: "http://lxc-docmost"
         passHostHeader: true
 
     lxc-redlib:
@@ -558,30 +489,6 @@ http:
       loadBalancer:
         servers:
           - url: "http://lxc-agh-dns-03:8080"
-        passHostHeader: true
-    
-    ct-transmission:
-      loadBalancer:
-        servers:
-          - url: "http://lxc-sevenseas:9091"
-        passHostHeader: true
-    
-    ct-prowlarr:
-      loadBalancer:
-        servers:
-          - url: "http://lxc-sevenseas:9696"
-        passHostHeader: true
-    
-    ct-radarr:
-      loadBalancer:
-        servers:
-          - url: "http://lxc-sevenseas:7878"
-        passHostHeader: true
-    
-    ct-sonarr:
-      loadBalancer:
-        servers:
-          - url: "http://lxc-sevenseas:8989"
         passHostHeader: true
     
     jellyfin:
@@ -652,6 +559,29 @@ http:
 
 #endregion
   middlewares:
+    authelia:
+      forwardAuth:
+        address: 'http://authelia.lab.escapethelan.com:9091/api/authz/forward-auth'
+        ## The following commented line is for configuring the Authelia URL in the proxy. We strongly suggest this is
+        ## configured in the Session Cookies section of the Authelia configuration.
+        # address: 'http://authelia:9091/api/authz/forward-auth?authelia_url=https%3A%2F%2Fauth.example.com%2F'
+        trustForwardHeader: true
+        authResponseHeaders:
+          - 'Remote-User'
+          - 'Remote-Groups'
+          - 'Remote-Email'
+          - 'Remote-Name'
+
+    authelia-basic:
+      forwardAuth:
+        address: 'http://authelia.lab.escapethelan.com:9091/api/verify?auth=basic'
+        trustForwardHeader: true
+        authResponseHeaders:
+          - 'Remote-User'
+          - 'Remote-Groups'
+          - 'Remote-Email'
+          - 'Remote-Name'
+
     swarm-headers:
       headers:
         customRequestHeaders:

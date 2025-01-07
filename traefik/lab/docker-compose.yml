@@ -7,9 +7,9 @@
       memswap_limit: 384m
       mem_reservation: 128m
       cpus: 2
-      network_mode: host
       dns:
         - 100.100.100.100
+      network_mode: host
       security_opt:
         - no-new-privileges:true
       environment:
@@ -42,31 +42,50 @@
         - "traefik.http.routers.traefik-secure.tls.domains[0].main=${DOMAIN}"
         - "traefik.http.routers.traefik-secure.tls.domains[0].sans=*.${DOMAIN}"
         - "traefik.http.routers.traefik-secure.service=api@internal"
+      depends_on:
+        - authelia
+    
+    authelia:
+      image: 'authelia/authelia'
+      container_name: 'authelia'
+      restart: unless-stopped
+      mem_limit: 384m
+      memswap_limit: 384m
+      mem_reservation: 128m
+      cpus: 1
+      dns:
+        - 100.100.100.100
+      security_opt:
+        - no-new-privileges:true
+      ports:
+        - ${ADDRESS}:9091:9091
+      volumes:
+        - '/opt/docker/volumes/authelia/config:/config'
+      environment:
+        - TZ=Europe/Budapest
     
     nginx:
       image: nginx:alpine
       restart: unless-stopped
       mem_limit: 64m
-      memswap_limit: 16m
+      memswap_limit: 64m
       mem_reservation: 16m
       cpus: 1
       security_opt:
         - no-new-privileges:true
       ports:
-        - 100.80.100.102:8080:80
+        - ${ADDRESS}:8080:80
       volumes:
         - /opt/docker/volumes/goaccess/report:/usr/share/nginx/html:ro 
       depends_on:
         - goaccess
-      labels:
-      - traefik.enable=true
-      - app.name=go
+
 
     goaccess:
       image: allinurl/goaccess
       restart: unless-stopped
       mem_limit: 64m
-      memswap_limit: 16m
+      memswap_limit: 64m
       mem_reservation: 16m
       cpus: 1
       security_opt:
@@ -86,8 +105,10 @@
         --persist
         --restore
       ports:
-        - 100.80.100.102:7890:7890
+        - ${ADDRESS}:7890:7890
       volumes:
-      - /opt/docker/volumes/traefik/data/logs:/srv/logs:ro
-      - /opt/docker/volumes/goaccess/report:/srv/report
-      - /opt/docker/volumes/goaccess/data:/srv/data
+        - /opt/docker/volumes/traefik/data/logs:/srv/logs:ro
+        - /opt/docker/volumes/goaccess/report:/srv/report
+        - /opt/docker/volumes/goaccess/data:/srv/data
+      depends_on:
+        - traefik
