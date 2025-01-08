@@ -119,6 +119,8 @@ function wait_for_mount_to_come_online() {
 function init() {
     # shellcheck disable=SC1090
     source "${CONFIGURATION_FILE_PATH}"
+    echo "Waiting 10s before checking mountpoint..."
+    sleep 10
 }
 
 function main() {
